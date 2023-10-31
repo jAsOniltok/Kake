@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.kobweb.application)
+    alias(libs.plugins.serialization.plugin)
 //    alias(libs.plugins.kobwebx.markdown)
 }
 
@@ -56,6 +57,7 @@ kotlin {
                 implementation(libs.kobweb.core)
                 implementation(libs.kobweb.silk)
                 implementation(libs.kobweb.silk.icons.fa)
+                implementation(libs.kotlinx.serialization)
                 // This default template uses built-in SVG icons, but what's available is limited.
                 // Uncomment the following if you want access to a large set of font-awesome icons:
                 // implementation(libs.silk.icons.fa)
@@ -66,6 +68,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(libs.kobweb.api)
+                implementation(libs.mongo.database)
+                implementation(libs.kotlinx.serialization)
             }
         }
     }
