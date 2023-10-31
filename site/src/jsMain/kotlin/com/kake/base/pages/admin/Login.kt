@@ -104,7 +104,6 @@ fun LoginScreen() {
                         attr("placeholder", "Username")
                     }
             )
-            //Test
             Input(
                 type = InputType.Password,
                 attrs = LoginInputStyle.toModifier()
