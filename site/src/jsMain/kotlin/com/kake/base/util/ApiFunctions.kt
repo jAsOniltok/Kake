@@ -31,8 +31,11 @@ suspend fun checkUserId(id:String): Boolean {
             apiPath = "checkuserid",
             body = Json.encodeToString(id).encodeToByteArray()
         )
+        println("check1 ${result?.decodeToString()?.let { Json.decodeFromString<Boolean>(it) } ?: false}")
+
         result?.decodeToString()?.let { Json.decodeFromString<Boolean>(it) } ?: false
     } catch (e: Exception) {
+        println("check2 false")
         println(e.message.toString())
         false
     }
