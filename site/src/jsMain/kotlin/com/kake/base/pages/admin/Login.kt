@@ -62,6 +62,8 @@ import org.w3c.dom.set
 @Page
 @Composable
 fun LoginScreen() {
+    println("LoginScreen0000")
+
     val scope = rememberCoroutineScope()
     val context = rememberPageContext()
     var errorText by remember { mutableStateOf(" ") }
@@ -82,7 +84,6 @@ fun LoginScreen() {
                     .margin(bottom = 50.px)
                     .width(100.px),
                 src = Res.Image.logo,
-                desc = "Logo Image"
             )
             Input(
                 type = InputType.Text,
@@ -137,12 +138,15 @@ fun LoginScreen() {
                     .fontSize(14.px)
                     .cursor(Cursor.Pointer)
                     .onClick {
+                        println("LoginScreen0 1")
+
                         scope.launch {
                             val username =
                                 (document.getElementById(Id.usernameInput) as HTMLInputElement).value
                             val password =
                                 (document.getElementById(Id.passwordInput) as HTMLInputElement).value
                             if (username.isNotEmpty() && password.isNotEmpty()) {
+                                println("LoginScreen 1")
                                 val user = checkUserExistence(
                                     user = User(
                                         username = username,
@@ -151,7 +155,7 @@ fun LoginScreen() {
                                 )
                                 if (user != null) {
                                     rememberLoggedIn(remember = true, user = user)
-                                    context.router.navigateTo("admin/home")
+                                    context.router.navigateTo("/admin")
                                 } else {
                                     errorText = "The user doesn't exist."
                                     delay(3000)

@@ -1,6 +1,6 @@
 [versions]
-jetbrains-compose = "1.5.3"
-kobweb = "0.14.1"
+jetbrains-compose = "1.5.1"
+kobweb = "0.14.2"
 kotlin = "1.9.10"
 kotlinx = "1.6.0"
 mongodb = "4.10.0"
@@ -13,7 +13,7 @@ kobweb-silk-icons-fa = { module = "com.varabyte.kobweb:kobweb-silk-icons-fa", ve
 kobweb-silk-icons-mdi = { module = "com.varabyte.kobweb:kobweb-silk-icons-mdi", version.ref = "kobweb" }
 kobwebx-markdown = { module = "com.varabyte.kobwebx:kobwebx-markdown", version.ref = "kobweb" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx" }
-mongo-database = { module = "org.litote.kmongo:kmongo-coroutine", version.ref = "mongodb" }
+mongo-database = { module = "org.litote.kmongo:kmongo-coroutine-serialization", version.ref = "mongodb" }
 
 
 [plugins]

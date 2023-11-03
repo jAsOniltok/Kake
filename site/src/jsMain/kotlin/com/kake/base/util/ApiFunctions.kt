@@ -6,16 +6,21 @@ import com.varabyte.kobweb.browser.api
 import kotlinx.browser.window
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
 
 suspend fun checkUserExistence(user: User): UserWithoutPassword? {
     return try {
         val result = window.api.tryPost(
             apiPath = "usercheck",
-            body = Json.encodeToString(user).encodeToByteArray()
+            body = Json.encodeToString(user).encodeToByteArray(),
         )
-        Json.decodeFromString<UserWithoutPassword>(result.toString())
+        result?.decodeToString()?.let { Json.decodeFromString<UserWithoutPassword>(it) }
     } catch (e: Exception) {
         println(e.message)
         null
     }
+}
+
+inline fun <reified T> String?.parseData(): T {
+    return Json.decodeFromString(this.toString())
 }

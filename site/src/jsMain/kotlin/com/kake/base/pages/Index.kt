@@ -15,6 +15,7 @@ import org.jetbrains.compose.web.dom.Text
 @Composable
 fun HomePage() {
     Column(modifier = Modifier.fillMaxSize().backgroundColor(Color.blue)) {
+        println("HomePageHomePage 1")
         Text(Testing().me)
     }
 }

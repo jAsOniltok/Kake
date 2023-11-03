@@ -12,6 +12,7 @@ actual data class User(
     actual val password: String = "",
 )
 
+@Serializable
 actual data class UserWithoutPassword(
     @SerialName(value = "_id")
     actual val id: String = "",

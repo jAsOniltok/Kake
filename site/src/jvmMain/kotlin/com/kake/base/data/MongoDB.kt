@@ -21,11 +21,12 @@ fun initMongoDB(context:InitApiContext) {
     context.data.add(MongoDB(context))
 }
 
-class MongoDB (val context:InitApiContext): MongoRepository {
+class MongoDB (private val context:InitApiContext): MongoRepository {
 
     private val client = KMongo.createClient()
     private val database = client.getDatabase(DATABASE_NAME)
     private val userCollection = database.getCollection<User>()
+
 
     override suspend fun checkUserExistence(user:User): User? {
         return try {
