@@ -1,13 +1,8 @@
 package com.kake.base.pages.admin
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.kake.base.components.OverflowSidePanel
 import com.kake.base.components.SidePanel
-import com.kake.base.util.Constants.PAGE_WIDTH
+import com.kake.base.util.Constants
 import com.kake.base.util.isUserLoggedIn
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -20,30 +15,21 @@ import org.jetbrains.compose.web.css.px
 
 @Page
 @Composable
-fun HomePage() {
+fun CreatePage(){
     isUserLoggedIn {
-        HomeScreen()
+        CreateScreen()
     }
 }
 
 @Composable
-fun HomeScreen() {
-    var overflowMenuOpened by remember { mutableStateOf(false) }
+fun CreateScreen(){
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(modifier = Modifier.fillMaxSize().maxWidth(PAGE_WIDTH.px)) {
+        Column(modifier = Modifier.fillMaxSize().maxWidth(Constants.PAGE_WIDTH.px)) {
             SidePanel {
-                overflowMenuOpened = true
-            }
-            if (overflowMenuOpened) {
-                OverflowSidePanel(
-                    onMenuClose = {
-                        overflowMenuOpened = false
-                    },
-                    content = {},
-                )
+
             }
         }
     }
