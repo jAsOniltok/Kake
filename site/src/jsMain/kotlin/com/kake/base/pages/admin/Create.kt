@@ -1,6 +1,7 @@
 package com.kake.base.pages.admin
 
 import androidx.compose.runtime.Composable
+import com.kake.base.components.AdminPageLayout
 import com.kake.base.components.SidePanel
 import com.kake.base.util.Constants
 import com.kake.base.util.isUserLoggedIn
@@ -23,14 +24,7 @@ fun CreatePage(){
 
 @Composable
 fun CreateScreen(){
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(modifier = Modifier.fillMaxSize().maxWidth(Constants.PAGE_WIDTH.px)) {
-            SidePanel {
+    AdminPageLayout {
 
-            }
-        }
     }
 }

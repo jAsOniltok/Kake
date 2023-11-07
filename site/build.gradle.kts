@@ -17,6 +17,15 @@ kobweb {
     app {
         index {
             description.set("Powered by Kobweb")
+            head.add {
+                script {
+                    src = "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+                }
+                link {
+                    rel = "stylesheet"
+                    href = "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+                }
+            }
         }
     }
 }

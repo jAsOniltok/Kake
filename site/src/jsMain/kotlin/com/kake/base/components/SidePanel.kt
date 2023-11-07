@@ -103,7 +103,7 @@ private fun SidePanelInternal() {
 }
 
 @Composable
-private fun NavigationItems(){
+fun NavigationItems(){
     val context = rememberPageContext()
     SpanText(
         text = "Dashboard",
