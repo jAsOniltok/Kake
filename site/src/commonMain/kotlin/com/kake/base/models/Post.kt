@@ -3,7 +3,7 @@ package com.kake.base.models
 expect class Post {
     val id: String
     val author: String
-    val date: Long
+    val date: Double
     val title: String
     val subtitle: String
     val thumbnail: String

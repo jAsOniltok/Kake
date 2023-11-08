@@ -9,7 +9,7 @@ actual data class Post(
     @SerialName("_id")
     actual val id: String = ObjectIdGenerator.newObjectId<String>().id.toHexString(),
     actual val author: String,
-    actual val date: Long,
+    actual val date: Double,
     actual val title: String,
     actual val subtitle: String,
     actual val thumbnail: String,

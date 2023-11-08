@@ -4,22 +4,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.kake.base.components.AdminPageLayout
 import com.kake.base.models.Category
+import com.kake.base.models.Constants.POST_ID_PARAM
 import com.kake.base.models.ControlStyle
 import com.kake.base.models.EditorControl
+import com.kake.base.models.Post
 import com.kake.base.models.Theme
+import com.kake.base.navigation.Screen
 import com.kake.base.styles.EditorKeyStyle
 import com.kake.base.util.Constants.FONT_FAMILY
 import com.kake.base.util.Constants.SIDE_PANEL_WIDTH
 import com.kake.base.util.Id
+import com.kake.base.util.addPost
 import com.kake.base.util.applyControlStyle
 import com.kake.base.util.applyStyle
 import com.kake.base.util.getEditor
 import com.kake.base.util.getSelectedText
 import com.kake.base.util.isUserLoggedIn
 import com.kake.base.util.noBorder
+import com.kake.base.util.updatePost
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.Overflow
@@ -64,6 +70,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.visibility
 import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
+import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobweb.silk.components.forms.Switch
 import com.varabyte.kobweb.silk.components.forms.SwitchSize
 import com.varabyte.kobweb.silk.components.graphics.Image
@@ -74,6 +81,9 @@ import com.varabyte.kobweb.silk.components.style.toModifier
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import kotlinx.browser.document
+import kotlinx.browser.localStorage
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.px
@@ -85,6 +95,45 @@ import org.jetbrains.compose.web.dom.Li
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.TextArea
 import org.jetbrains.compose.web.dom.Ul
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLTextAreaElement
+import org.w3c.dom.get
+import kotlin.js.Date
+
+data class CreatePageUiState(
+    var id: String = "",
+    var title: String = "",
+    var subtitle: String = "",
+    var thumbnail: String = "",
+    var thumbnailInputDisabled: Boolean = true,
+    var content: String = "",
+    var category: Category = Category.Programming,
+    var buttonText: String = "Create",
+    var popular: Boolean = false,
+    var main: Boolean = false,
+    var sponsored: Boolean = false,
+    var editorVisibility: Boolean = true,
+    var messagePopup: Boolean = false,
+    var linkPopup: Boolean = false,
+    var imagePopup: Boolean = false
+) {
+    fun reset() = this.copy(
+        id = "",
+        title = "",
+        subtitle = "",
+        thumbnail = "",
+        content = "",
+        category = Category.Programming,
+        buttonText = "Create",
+        main = false,
+        popular = false,
+        sponsored = false,
+        editorVisibility = true,
+        messagePopup = false,
+        linkPopup = false,
+        imagePopup = false
+    )
+}
 
 @Page
 @Composable
@@ -96,14 +145,14 @@ fun CreatePage() {
 
 @Composable
 fun CreateScreen() {
+    val scope = rememberCoroutineScope()
+    val context = rememberPageContext()
     val breakpoint = rememberBreakpoint()
-    var popularSwitch by remember { mutableStateOf(false) }
-    var mainSwitch by remember { mutableStateOf(false) }
-    var sponsoredSwitch by remember { mutableStateOf(false) }
-    var thumbnailInputDisabled by remember { mutableStateOf(true) }
-    var editorVisibility by remember { mutableStateOf(true) }
-    var fileName by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf(Category.Programming) }
+    var uiState by remember { mutableStateOf(CreatePageUiState()) }
+    val hasPostIdParam = remember(key1 = context.route) {
+        context.route.params.containsKey(POST_ID_PARAM)
+    }
+
     AdminPageLayout {
         Box(
             modifier = Modifier
@@ -135,9 +184,9 @@ fun CreateScreen() {
                     ) {
                         Switch(
                             modifier = Modifier.margin(right = 8.px),
-                            checked = popularSwitch,
+                            checked = uiState.popular,
                             onCheckedChange = {
-                                popularSwitch = it
+                                uiState = uiState.copy(popular = it)
                             },
                             size = SwitchSize.LG
                         )
@@ -159,9 +208,9 @@ fun CreateScreen() {
                     ) {
                         Switch(
                             modifier = Modifier.margin(right = 8.px),
-                            checked = mainSwitch,
+                            checked = uiState.main,
                             onCheckedChange = {
-                                mainSwitch = it
+                                uiState = uiState.copy(main = it)
                             },
                             size = SwitchSize.LG
                         )
@@ -183,9 +232,9 @@ fun CreateScreen() {
                     ) {
                         Switch(
                             modifier = Modifier.margin(right = 8.px),
-                            checked = sponsoredSwitch,
+                            checked = uiState.sponsored,
                             onCheckedChange = {
-                                sponsoredSwitch = it
+                                uiState = uiState.copy(sponsored = it)
                             },
                             size = SwitchSize.LG
                         )
@@ -201,6 +250,7 @@ fun CreateScreen() {
                 Input(
                     type = InputType.Text,
                     attrs = Modifier
+                        .id(Id.titleInput)
                         .fillMaxWidth()
                         .height(54.px)
                         .margin(topBottom = 12.px)
@@ -229,6 +279,7 @@ fun CreateScreen() {
                 Input(
                     type = InputType.Text,
                     attrs = Modifier
+                        .id(Id.subtitleInput)
                         .fillMaxWidth()
                         .height(54.px)
                         .margin(bottom = 12.px)
@@ -255,9 +306,9 @@ fun CreateScreen() {
                         }
                 )
                 CategoryDropdown(
-                    selectedCategory = selectedCategory,
+                    selectedCategory = uiState.category,
                     onCategorySelect = {
-                        selectedCategory = it
+                        uiState = uiState.copy(category = it)
                     }
                 )
                 Row(
@@ -269,9 +320,9 @@ fun CreateScreen() {
                 ) {
                     Switch(
                         modifier = Modifier.margin(right = 8.px),
-                        checked = !thumbnailInputDisabled,
+                        checked = !uiState.thumbnailInputDisabled,
                         onCheckedChange = {
-                            thumbnailInputDisabled = !it
+                            uiState = uiState.copy(thumbnailInputDisabled = !it)
                         },
                         size = SwitchSize.MD
                     )
@@ -284,29 +335,92 @@ fun CreateScreen() {
                     )
                 }
                 ThumbnailUploader(
-                    thumbnail = fileName,
-                    thumbnailInputDisabled = thumbnailInputDisabled,
+                    thumbnail = uiState.thumbnail,
+                    thumbnailInputDisabled = uiState.thumbnailInputDisabled,
                     onThumbnailSelect = { filename, file ->
-                        fileName = filename
+                        uiState = uiState.copy(thumbnail = filename)
                         println(filename)
                         println(file)
                     }
                 )
                 EditorControls(
                     breakpoint = breakpoint,
-                    editorVisibility = editorVisibility,
+                    editorVisibility = uiState.editorVisibility,
                     onLinkClick = {},
                     onImageClick = {},
                     onEditorVisibilityChange = {
-                        editorVisibility = !editorVisibility
+                        uiState = uiState.copy(editorVisibility = !uiState.editorVisibility)
                     }
                 )
                 Editor(
-                    editorVisibility = editorVisibility
+                    editorVisibility = uiState.editorVisibility
                 )
                 CreateButton(
-                    text = "Create",
-                    onClick = {}
+                    text = uiState.buttonText,
+                    onClick = {
+                        uiState =
+                            uiState.copy(title = (document.getElementById(Id.titleInput) as HTMLInputElement).value)
+                        uiState =
+                            uiState.copy(subtitle = (document.getElementById(Id.subtitleInput) as HTMLInputElement).value)
+                        uiState =
+                            uiState.copy(content = (document.getElementById(Id.editor) as HTMLTextAreaElement).value)
+
+                        if (!uiState.thumbnailInputDisabled) {
+                            uiState =
+                                uiState.copy(thumbnail = (document.getElementById(Id.thumbnailInput) as HTMLInputElement).value)
+                        }
+                        if (
+                            uiState.title.isNotEmpty() &&
+                            uiState.subtitle.isNotEmpty() &&
+                            uiState.thumbnail.isNotEmpty() &&
+                            uiState.content.isNotEmpty()
+                        ) {
+                            scope.launch {
+                                if (hasPostIdParam) {
+                                    val result = updatePost(
+                                        Post(
+                                            id = uiState.id,
+                                            title = uiState.title,
+                                            subtitle = uiState.subtitle,
+                                            thumbnail = uiState.thumbnail,
+                                            content = uiState.content,
+                                            category = uiState.category,
+                                            popular = uiState.popular,
+                                            main = uiState.main,
+                                            sponsored = uiState.sponsored
+                                        )
+                                    )
+                                    if (result) {
+                                        context.router.navigateTo(Screen.AdminSuccess.postUpdated())
+                                    }
+                                } else {
+                                    val result = addPost(
+                                        Post(
+                                            author = localStorage["username"].toString(),
+                                            title = uiState.title,
+                                            subtitle = uiState.subtitle,
+                                            date = Date.now(),
+                                            thumbnail = uiState.thumbnail,
+                                            content = uiState.content,
+                                            category = uiState.category,
+                                            popular = uiState.popular,
+                                            main = uiState.main,
+                                            sponsored = uiState.sponsored
+                                        )
+                                    )
+                                    if (result) {
+                                        context.router.navigateTo(Screen.AdminSuccess.route)
+                                    }
+                                }
+                            }
+                        } else {
+                            scope.launch {
+                                uiState = uiState.copy(messagePopup = true)
+                                delay(2000)
+                                uiState = uiState.copy(messagePopup = false)
+                            }
+                        }
+                    }
                 )
             }
         }

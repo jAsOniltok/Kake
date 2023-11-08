@@ -1,5 +1,6 @@
 package com.kake.base.util
 
+import com.kake.base.models.Post
 import com.kake.base.models.RandomJoke
 import com.kake.base.models.User
 import com.kake.base.models.UserWithoutPassword
@@ -80,5 +81,31 @@ suspend fun fetchRandomJoke(onComplete: (RandomJoke) -> Unit) {
             onComplete(RandomJoke(id = -1, joke = e.message.toString()))
             println(e.message)
         }
+    }
+}
+
+suspend fun addPost(post: Post): Boolean {
+    return try {
+        println("addPost 1")
+        window.api.tryPost(
+            apiPath = "addpost",
+            body = Json.encodeToString(post).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    } catch (e: Exception) {
+        println("addPost 2")
+        println(e.message)
+        false
+    }
+}
+
+suspend fun updatePost(post: Post): Boolean {
+    return try {
+        window.api.tryPost(
+            apiPath = "updatepost",
+            body = Json.encodeToString(post).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    } catch (e: Exception) {
+        println(e.message)
+        false
     }
 }
