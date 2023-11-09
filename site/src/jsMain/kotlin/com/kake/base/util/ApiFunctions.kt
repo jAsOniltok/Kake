@@ -1,5 +1,6 @@
 package com.kake.base.util
 
+import com.kake.base.models.Constants.POST_ID_PARAM
 import com.kake.base.models.Post
 import com.kake.base.models.RandomJoke
 import com.kake.base.models.User
@@ -10,7 +11,6 @@ import kotlinx.browser.localStorage
 import kotlinx.browser.window
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.decodeFromString
 import org.w3c.dom.get
 import org.w3c.dom.set
 import kotlin.js.Date
@@ -109,3 +109,16 @@ suspend fun updatePost(post: Post): Boolean {
         false
     }
 }
+
+/*
+suspend fun fetchSelectedPost(id: String): ApiListResponse {
+    return try {
+        val result = window.api.tryGet(
+            apiPath = "readselectedpost?${POST_ID_PARAM}=$id"
+        )?.decodeToString()
+        result?.parseData() ?: ApiListResponse.Error(message = "Result is null")
+    } catch (e: Exception) {
+        println(e)
+        ApiListResponse.Error(message = e.message.toString())
+    }
+}*/

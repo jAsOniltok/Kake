@@ -1,12 +1,15 @@
 package com.kake.base.pages.admin
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.kake.base.components.AdminPageLayout
+import com.kake.base.components.ControlPopup
+import com.kake.base.components.MessagePopup
 import com.kake.base.models.Category
 import com.kake.base.models.Constants.POST_ID_PARAM
 import com.kake.base.models.ControlStyle
@@ -42,7 +45,6 @@ import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.attrsModifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
-import com.varabyte.kobweb.compose.ui.modifiers.border
 import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
 import com.varabyte.kobweb.compose.ui.modifiers.classNames
 import com.varabyte.kobweb.compose.ui.modifiers.color
@@ -61,7 +63,6 @@ import com.varabyte.kobweb.compose.ui.modifiers.maxHeight
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.onKeyDown
-import com.varabyte.kobweb.compose.ui.modifiers.outline
 import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.resize
@@ -85,7 +86,6 @@ import kotlinx.browser.localStorage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
-import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.Button
@@ -149,8 +149,35 @@ fun CreateScreen() {
     val context = rememberPageContext()
     val breakpoint = rememberBreakpoint()
     var uiState by remember { mutableStateOf(CreatePageUiState()) }
+
     val hasPostIdParam = remember(key1 = context.route) {
         context.route.params.containsKey(POST_ID_PARAM)
+    }
+
+    LaunchedEffect(hasPostIdParam) {
+        if (hasPostIdParam) {
+            /* val postId = context.route.params[POST_ID_PARAM] ?: ""
+             val response = fetchSelectedPost(id = postId)
+             if (response is ApiListResponse.Success) {
+                 (document.getElementById(Id.editor) as HTMLTextAreaElement).value =
+                     response.data.content
+                 uiState = uiState.copy(
+                     id = response.data._id,
+                     title = response.data.title,
+                     subtitle = response.data.subtitle,
+                     content = response.data.content,
+                     category = response.data.category,
+                     thumbnail = response.data.thumbnail,
+                     buttonText = "Update",
+                     main = response.data.main,
+                     popular = response.data.popular,
+                     sponsored = response.data.sponsored
+                 )
+             }*/
+        } else {
+            (document.getElementById(Id.editor) as HTMLTextAreaElement).value = ""
+            uiState = uiState.reset()
+        }
     }
 
     AdminPageLayout {
@@ -159,14 +186,14 @@ fun CreateScreen() {
                 .fillMaxSize()
                 .margin(topBottom = 50.px)
                 .padding(left = if (breakpoint > Breakpoint.MD) SIDE_PANEL_WIDTH.px else 0.px),
-            contentAlignment = Alignment.TopCenter,
+            contentAlignment = Alignment.TopCenter
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .maxWidth(700.px),
                 verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 SimpleGrid(
                     numColumns = numColumns(
@@ -177,17 +204,15 @@ fun CreateScreen() {
                     Row(
                         modifier = Modifier
                             .margin(
-                                right = if (breakpoint < Breakpoint.SM) 0.px else 24.px,
-                                bottom = if (breakpoint < Breakpoint.SM) 12.px else 0.px,
+                                right = 24.px,
+                                bottom = if (breakpoint < Breakpoint.SM) 12.px else 0.px
                             ),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Switch(
                             modifier = Modifier.margin(right = 8.px),
                             checked = uiState.popular,
-                            onCheckedChange = {
-                                uiState = uiState.copy(popular = it)
-                            },
+                            onCheckedChange = { uiState = uiState.copy(popular = it) },
                             size = SwitchSize.LG
                         )
                         SpanText(
@@ -201,17 +226,15 @@ fun CreateScreen() {
                     Row(
                         modifier = Modifier
                             .margin(
-                                right = if (breakpoint < Breakpoint.SM) 0.px else 24.px,
-                                bottom = if (breakpoint < Breakpoint.SM) 12.px else 0.px,
+                                right = 24.px,
+                                bottom = if (breakpoint < Breakpoint.SM) 12.px else 0.px
                             ),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Switch(
                             modifier = Modifier.margin(right = 8.px),
                             checked = uiState.main,
-                            onCheckedChange = {
-                                uiState = uiState.copy(main = it)
-                            },
+                            onCheckedChange = { uiState = uiState.copy(main = it) },
                             size = SwitchSize.LG
                         )
                         SpanText(
@@ -224,18 +247,13 @@ fun CreateScreen() {
                     }
                     Row(
                         modifier = Modifier
-                            .margin(
-                                right = if (breakpoint < Breakpoint.SM) 0.px else 24.px,
-                                bottom = if (breakpoint < Breakpoint.SM) 12.px else 0.px,
-                            ),
+                            .margin(bottom = if (breakpoint < Breakpoint.SM) 12.px else 0.px),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Switch(
                             modifier = Modifier.margin(right = 8.px),
                             checked = uiState.sponsored,
-                            onCheckedChange = {
-                                uiState = uiState.copy(sponsored = it)
-                            },
+                            onCheckedChange = { uiState = uiState.copy(sponsored = it) },
                             size = SwitchSize.LG
                         )
                         SpanText(
@@ -257,22 +275,17 @@ fun CreateScreen() {
                         .padding(leftRight = 20.px)
                         .backgroundColor(Theme.LightGray.rgb)
                         .borderRadius(r = 4.px)
-                        .border(
-                            width = 0.px,
-                            style = LineStyle.None,
-                            color = Colors.Transparent
-                        )
-                        .outline(
-                            width = 0.px,
-                            style = LineStyle.None,
-                            color = Colors.Transparent
-                        )
+                        .noBorder()
                         .fontFamily(FONT_FAMILY)
                         .fontSize(16.px)
                         .toAttrs {
                             attr(
                                 "placeholder",
                                 "Title"
+                            )
+                            attr(
+                                "value",
+                                uiState.title
                             )
                         }
                 )
@@ -282,20 +295,10 @@ fun CreateScreen() {
                         .id(Id.subtitleInput)
                         .fillMaxWidth()
                         .height(54.px)
-                        .margin(bottom = 12.px)
                         .padding(leftRight = 20.px)
                         .backgroundColor(Theme.LightGray.rgb)
                         .borderRadius(r = 4.px)
-                        .border(
-                            width = 0.px,
-                            style = LineStyle.None,
-                            color = Colors.Transparent
-                        )
-                        .outline(
-                            width = 0.px,
-                            style = LineStyle.None,
-                            color = Colors.Transparent
-                        )
+                        .noBorder()
                         .fontFamily(FONT_FAMILY)
                         .fontSize(16.px)
                         .toAttrs {
@@ -303,27 +306,25 @@ fun CreateScreen() {
                                 "placeholder",
                                 "Subtitle"
                             )
+                            attr(
+                                "value",
+                                uiState.subtitle
+                            )
                         }
                 )
                 CategoryDropdown(
                     selectedCategory = uiState.category,
-                    onCategorySelect = {
-                        uiState = uiState.copy(category = it)
-                    }
+                    onCategorySelect = { uiState = uiState.copy(category = it) }
                 )
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .margin(topBottom = 12.px),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
+                    modifier = Modifier.fillMaxWidth().margin(topBottom = 12.px),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Switch(
                         modifier = Modifier.margin(right = 8.px),
                         checked = !uiState.thumbnailInputDisabled,
-                        onCheckedChange = {
-                            uiState = uiState.copy(thumbnailInputDisabled = !it)
-                        },
+                        onCheckedChange = { uiState = uiState.copy(thumbnailInputDisabled = !it) },
                         size = SwitchSize.MD
                     )
                     SpanText(
@@ -338,23 +339,27 @@ fun CreateScreen() {
                     thumbnail = uiState.thumbnail,
                     thumbnailInputDisabled = uiState.thumbnailInputDisabled,
                     onThumbnailSelect = { filename, file ->
-                        uiState = uiState.copy(thumbnail = filename)
-                        println(filename)
-                        println(file)
+                        (document.getElementById(Id.thumbnailInput) as HTMLInputElement).value =
+                            filename
+                        uiState = uiState.copy(thumbnail = file)
                     }
                 )
                 EditorControls(
                     breakpoint = breakpoint,
                     editorVisibility = uiState.editorVisibility,
-                    onLinkClick = {},
-                    onImageClick = {},
                     onEditorVisibilityChange = {
-                        uiState = uiState.copy(editorVisibility = !uiState.editorVisibility)
+                        uiState = uiState.copy(
+                            editorVisibility = !uiState.editorVisibility
+                        )
+                    },
+                    onLinkClick = {
+                        uiState = uiState.copy(linkPopup = true)
+                    },
+                    onImageClick = {
+                        uiState = uiState.copy(imagePopup = true)
                     }
                 )
-                Editor(
-                    editorVisibility = uiState.editorVisibility
-                )
+                Editor(editorVisibility = uiState.editorVisibility)
                 CreateButton(
                     text = uiState.buttonText,
                     onClick = {
@@ -364,7 +369,6 @@ fun CreateScreen() {
                             uiState.copy(subtitle = (document.getElementById(Id.subtitleInput) as HTMLInputElement).value)
                         uiState =
                             uiState.copy(content = (document.getElementById(Id.editor) as HTMLTextAreaElement).value)
-
                         if (!uiState.thumbnailInputDisabled) {
                             uiState =
                                 uiState.copy(thumbnail = (document.getElementById(Id.thumbnailInput) as HTMLInputElement).value)
@@ -424,6 +428,42 @@ fun CreateScreen() {
                 )
             }
         }
+        if (uiState.messagePopup) {
+            MessagePopup(
+                message = "Please fill out all fields.",
+                onDialogDismiss = { uiState = uiState.copy(messagePopup = false) }
+            )
+        }
+        if (uiState.linkPopup) {
+            ControlPopup(
+                editorControl = EditorControl.Link,
+                onDialogDismiss = { uiState = uiState.copy(linkPopup = false) },
+                onAddClick = { href, title ->
+                    applyStyle(
+                        ControlStyle.Link(
+                            selectedText = getSelectedText(),
+                            href = href,
+                            title = title
+                        )
+                    )
+                }
+            )
+        }
+        if (uiState.imagePopup) {
+            ControlPopup(
+                editorControl = EditorControl.Image,
+                onDialogDismiss = { uiState = uiState.copy(imagePopup = false) },
+                onAddClick = { imageUrl, description ->
+                    applyStyle(
+                        ControlStyle.Image(
+                            selectedText = getSelectedText(),
+                            imageUrl = imageUrl,
+                            desc = description
+                        )
+                    )
+                }
+            )
+        }
     }
 }
 
@@ -441,7 +481,10 @@ fun CategoryDropdown(
             .backgroundColor(Theme.LightGray.rgb)
             .cursor(Cursor.Pointer)
             .attrsModifier {
-                attr("data-bs-toggle", "dropdown")
+                attr(
+                    "data-bs-toggle",
+                    "dropdown"
+                )
             }
     ) {
         Row(
@@ -514,8 +557,14 @@ fun ThumbnailUploader(
                     other = Modifier.disabled()
                 )
                 .toAttrs {
-                    attr("placeholder", "Thumbnail")
-                    attr("value", thumbnail)
+                    attr(
+                        "placeholder",
+                        "Thumbnail"
+                    )
+                    attr(
+                        "value",
+                        thumbnail
+                    )
                 }
         )
         Button(
@@ -524,7 +573,10 @@ fun ThumbnailUploader(
                     document.loadDataUrlFromDisk(
                         accept = "image/png, image/jpeg",
                         onLoaded = {
-                            onThumbnailSelect(filename, it)
+                            onThumbnailSelect(
+                                filename,
+                                it
+                            )
                         }
                     )
                 }
@@ -559,7 +611,10 @@ fun EditorControls(
     Box(modifier = Modifier.fillMaxWidth()) {
         SimpleGrid(
             modifier = Modifier.fillMaxWidth(),
-            numColumns = numColumns(base = 1, sm = 2)
+            numColumns = numColumns(
+                base = 1,
+                sm = 2
+            )
         ) {
             Row(
                 modifier = Modifier
@@ -671,7 +726,10 @@ fun Editor(editorVisibility: Boolean) {
                 .fontFamily(FONT_FAMILY)
                 .fontSize(16.px)
                 .toAttrs {
-                    attr("placeholder", "Type here...")
+                    attr(
+                        "placeholder",
+                        "Type here..."
+                    )
                 }
         )
         Div(

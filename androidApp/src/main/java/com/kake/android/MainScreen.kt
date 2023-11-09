@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.kake.base.ApiResponse
-import com.kake.base.parseAsString
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,10 +47,7 @@ fun MainScreen() {
             modifier = Modifier.padding(bottom = 12.dp),
             onClick = {
                 scope.launch {
-                    val apiResponse = fetchData(
-                        count = if (value.isNumeric()) value.toInt() else 0
-                    )
-                    apiResponseText = apiResponse.parseAsString()
+
                 }
             }) {
             Text(text = "Fetch")

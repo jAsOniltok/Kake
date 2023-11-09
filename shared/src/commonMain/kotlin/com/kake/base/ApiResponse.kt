@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 sealed class ApiResponse {
     @Serializable
     @SerialName("idle")
-    object Idle: ApiResponse()
+    data object Idle: ApiResponse()
     @Serializable
     @SerialName("success")
     data class Success(val data: List<Person>): ApiResponse()
