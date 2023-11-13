@@ -715,7 +715,8 @@ fun Editor(editorVisibility: Boolean) {
                     else Visibility.Hidden
                 )
                 .onKeyDown {
-                    if (it.code == "Enter" && it.shiftKey) {
+                    println("onKeyDown ${it.code}")
+                    if (it.code == "Enter" /*|| it.shiftKey*/) {
                         applyStyle(
                             controlStyle = ControlStyle.Break(
                                 selectedText = getSelectedText()
