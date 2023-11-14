@@ -8,7 +8,7 @@ import org.bson.codecs.ObjectIdGenerator
 @Serializable
 actual data class User(
     @SerialName(value = "_id")
-    actual val id: String = ObjectIdGenerator().generate().toString(),
+    actual val _id: String = ObjectIdGenerator().generate().toString(),
     actual val username: String = "",
     actual val password: String = "",
 )
@@ -16,6 +16,6 @@ actual data class User(
 @Serializable
 actual data class UserWithoutPassword(
     @SerialName(value = "_id")
-    actual val id: String = ObjectIdGenerator().generate().toString(),
+    actual val _id: String = ObjectIdGenerator().generate().toString(),
     actual val username: String = "",
 )

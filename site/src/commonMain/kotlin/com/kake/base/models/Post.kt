@@ -1,7 +1,7 @@
 package com.kake.base.models
 
 expect class Post {
-    val id: String
+    val _id: String
     val author: String
     val date: Double
     val title: String
@@ -15,7 +15,7 @@ expect class Post {
 }
 
 expect class PostWithoutDetails {
-    val id: String
+    val _id: String
     val author: String
     val date: Double
     val title: String

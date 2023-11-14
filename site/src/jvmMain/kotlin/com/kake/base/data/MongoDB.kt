@@ -7,19 +7,14 @@ import com.kake.base.models.User
 import com.kake.base.util.Constants.DATABASE_NAME
 import com.kake.base.util.Constants.MAIN_POSTS_LIMIT
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Indexes.descending
 import com.mongodb.client.model.Updates
+import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.varabyte.kobweb.api.data.add
 import com.varabyte.kobweb.api.init.InitApi
 import com.varabyte.kobweb.api.init.InitApiContext
-import kotlinx.coroutines.reactive.awaitFirst
-import kotlinx.coroutines.reactive.awaitFirstOrNull
-import org.litote.kmongo.and
-import org.litote.kmongo.coroutine.toList
-import org.litote.kmongo.descending
-import org.litote.kmongo.eq
-import org.litote.kmongo.reactivestreams.KMongo
-import org.litote.kmongo.reactivestreams.getCollection
-import org.litote.kmongo.reactivestreams.map
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.toList
 
 
 @InitApi
@@ -33,21 +28,21 @@ fun initMongoDB(context:InitApiContext) {
 
 class MongoDB (private val context:InitApiContext): MongoRepository {
 
-    private val client = KMongo.createClient()
+    private val client = MongoClient.create()
     private val database = client.getDatabase(DATABASE_NAME)
-    private val userCollection = database.getCollection<User>()
-    private val postCollection = database.getCollection<Post>()
+    private val userCollection = database.getCollection<User>("user")
+    private val postCollection = database.getCollection<Post>("post")
 
-    override suspend fun checkUserExistence(user:User): User? {
+    override suspend fun checkUserExistence(user: User): User? {
         return try {
             userCollection
-            .find(
-                and(
-                   User::username eq user.username,
-                    User::password eq user.password
-                )
-            ).awaitFirst()
-        }catch (e:Exception) {
+                .find(
+                    Filters.and(
+                        Filters.eq(User::username.name, user.username),
+                        Filters.eq(User::password.name, user.password)
+                    )
+                ).firstOrNull()
+        } catch (e: Exception) {
             context.logger.error(e.message.toString())
             null
         }
@@ -55,7 +50,7 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
 
     override suspend fun checkUserId(id: String): Boolean {
         return try {
-            val documentCount = userCollection.countDocuments(User::id eq id).awaitFirst()
+            val documentCount = userCollection.countDocuments(Filters.eq(User::_id.name, id))
             documentCount > 0
         } catch (e: Exception) {
             context.logger.error(e.message.toString())
@@ -64,13 +59,13 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
     }
 
     override suspend fun addPost(post: Post): Boolean {
-        return postCollection.insertOne(post).awaitFirst().wasAcknowledged()
+        return postCollection.insertOne(post).wasAcknowledged()
     }
 
     override suspend fun updatePost(post: Post): Boolean {
         return postCollection
             .updateOne(
-                Filters.eq(Post::id.name, post.id),
+                Filters.eq(Post::_id.name, post._id),
                 mutableListOf(
                     Updates.set(Post::title.name, post.title),
                     Updates.set(Post::subtitle.name, post.subtitle),
@@ -82,7 +77,6 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
                     Updates.set(Post::sponsored.name, post.sponsored)
                 )
             )
-            .awaitFirst()
             .wasAcknowledged()
     }
 
@@ -90,7 +84,7 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
         return postCollection
             .withDocumentClass(PostWithoutDetails::class.java)
             .find(Filters.eq(PostWithoutDetails::author.name, author))
-            .sort(descending(PostWithoutDetails::date))
+            .sort(descending(PostWithoutDetails::date.name))
             .skip(skip)
             .limit(POSTS_PER_PAGE)
             .toList()
@@ -100,7 +94,7 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
         return postCollection
             .withDocumentClass(PostWithoutDetails::class.java)
             .find(Filters.eq(PostWithoutDetails::main.name, true))
-            .sort(descending(PostWithoutDetails::date))
+            .sort(descending(PostWithoutDetails::date.name))
             .limit(MAIN_POSTS_LIMIT)
             .toList()
     }
@@ -115,7 +109,7 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
                     Filters.eq(PostWithoutDetails::sponsored.name, false)
                 )
             )
-            .sort(descending(PostWithoutDetails::date))
+            .sort(descending(PostWithoutDetails::date.name))
             .skip(skip)
             .limit(POSTS_PER_PAGE)
             .toList()
@@ -125,7 +119,7 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
         return postCollection
             .withDocumentClass(PostWithoutDetails::class.java)
             .find(Filters.eq(PostWithoutDetails::sponsored.name, true))
-            .sort(descending(PostWithoutDetails::date))
+            .sort(descending(PostWithoutDetails::date.name))
             .limit(2)
             .toList()
     }
@@ -134,7 +128,7 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
         return postCollection
             .withDocumentClass(PostWithoutDetails::class.java)
             .find(Filters.eq(PostWithoutDetails::popular.name, true))
-            .sort(descending(PostWithoutDetails::date))
+            .sort(descending(PostWithoutDetails::date.name))
             .skip(skip)
             .limit(POSTS_PER_PAGE)
             .toList()
@@ -142,8 +136,7 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
 
     override suspend fun deleteSelectedPosts(ids: List<String>): Boolean {
         return postCollection
-            .deleteMany(Filters.`in`(Post::id.name, ids))
-            .awaitFirst()
+            .deleteMany(Filters.`in`(Post::_id.name, ids))
             .wasAcknowledged()
     }
 }

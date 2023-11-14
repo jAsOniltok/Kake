@@ -4,6 +4,7 @@ kobweb = "0.14.2"
 kotlin = "1.9.10"
 kotlinx = "1.6.0"
 mongodb = "4.10.0"
+mongodb-kotlin = "4.10.1"
 
 [libraries]
 kobweb-api = { module = "com.varabyte.kobweb:kobweb-api", version.ref = "kobweb" }
@@ -14,6 +15,8 @@ kobweb-silk-icons-mdi = { module = "com.varabyte.kobweb:kobweb-silk-icons-mdi", 
 kobwebx-markdown = { module = "com.varabyte.kobwebx:kobwebx-markdown", version.ref = "kobweb" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx" }
 mongo-database = { module = "org.litote.kmongo:kmongo-coroutine-serialization", version.ref = "mongodb" }
+mongo-kotlin-driver = { module = "org.mongodb:mongodb-driver-kotlin-coroutine", version.ref = "mongodb-kotlin" }
+
 
 
 [plugins]

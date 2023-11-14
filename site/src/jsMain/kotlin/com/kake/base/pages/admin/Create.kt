@@ -383,7 +383,7 @@ fun CreateScreen() {
                                 if (hasPostIdParam) {
                                     val result = updatePost(
                                         Post(
-                                            id = uiState.id,
+                                            _id = uiState.id,
                                             title = uiState.title,
                                             subtitle = uiState.subtitle,
                                             thumbnail = uiState.thumbnail,

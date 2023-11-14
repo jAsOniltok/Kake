@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 
-@Serializable
+@Serializable(ApiListResponseSerializer::class)
 actual sealed class ApiListResponse {
     @Serializable
     @SerialName("idle")
