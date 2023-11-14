@@ -1,5 +1,7 @@
 package com.kake.base.navigation
 
+import com.kake.base.models.Category
+import com.kake.base.models.Constants.CATEGORY_PARAM
 import com.kake.base.models.Constants.POST_ID_PARAM
 import com.kake.base.models.Constants.QUERY_PARAM
 import com.kake.base.models.Constants.UPDATED_PARAM
@@ -22,8 +24,8 @@ sealed class Screen(val route: String) {
 
     data object HomePage : Screen(route = "/")
     data object SearchPage : Screen(route = "/search/query") {
-       /* fun searchByCategory(category: Category) =
-            "/search/query?${CATEGORY_PARAM}=${category.name}"*/
+        fun searchByCategory(category: Category) =
+            "/search/query?${CATEGORY_PARAM}=${category.name}"
 
         fun searchByTitle(query: String) = "/search/query?${QUERY_PARAM}=$query"
     }

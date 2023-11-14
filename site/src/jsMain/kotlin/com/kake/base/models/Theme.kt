@@ -1,5 +1,6 @@
 package com.kake.base.models
 
+import kotlinx.serialization.Serializable
 import org.jetbrains.compose.web.css.CSSColorValue
 import org.jetbrains.compose.web.css.rgb
 import org.jetbrains.compose.web.css.rgba
