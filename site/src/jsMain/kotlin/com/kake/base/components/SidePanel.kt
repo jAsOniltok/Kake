@@ -73,21 +73,15 @@ fun SidePanel(onMenuClick: () -> Unit) {
     if (breakpoint > Breakpoint.MD) {
         SidePanelInternal()
     } else {
-        CollapsedSidePanel {
-            onMenuClick()
-        }
+        CollapsedSidePanel(onMenuClick = onMenuClick)
     }
 }
-
 
 @Composable
 private fun SidePanelInternal() {
     Column(
         modifier = Modifier
-            .padding(
-                leftRight = 40.px,
-                topBottom = 50.px
-            )
+            .padding(leftRight = 40.px, topBottom = 50.px)
             .width(SIDE_PANEL_WIDTH.px)
             .height(100.vh)
             .position(Position.Fixed)
@@ -95,23 +89,23 @@ private fun SidePanelInternal() {
             .zIndex(9)
     ) {
         Image(
+            modifier = Modifier.margin(bottom = 60.px),
             src = Res.Image.logo,
-            modifier = Modifier.margin(bottom = 60.px)
         )
         NavigationItems()
     }
 }
 
 @Composable
-fun NavigationItems(){
+fun NavigationItems() {
     val context = rememberPageContext()
     SpanText(
-        text = "Dashboard",
         modifier = Modifier
             .margin(bottom = 30.px)
             .fontFamily(FONT_FAMILY)
             .fontSize(14.px)
-            .color(Theme.HalfWhite.rgb)
+            .color(Theme.HalfWhite.rgb),
+        text = "Dashboard"
     )
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
@@ -124,18 +118,18 @@ fun NavigationItems(){
     )
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
+        selected = context.route.path == Screen.AdminCreate.route,
         title = "Create Post",
         icon = Res.PathIcon.create,
-        selected = context.route.path == Screen.AdminCreate.route,
         onClick = {
             context.router.navigateTo(Screen.AdminCreate.route)
         }
     )
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
+        selected = context.route.path == Screen.AdminMyPosts.route,
         title = "My Posts",
         icon = Res.PathIcon.posts,
-        selected = context.route.path == Screen.AdminMyPosts.route,
         onClick = {
             context.router.navigateTo(Screen.AdminMyPosts.route)
         }
@@ -156,7 +150,7 @@ private fun NavigationItem(
     selected: Boolean = false,
     title: String,
     icon: String,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = NavigationItemStyle.toModifier()
@@ -196,43 +190,19 @@ private fun VectorIcon(
             .width(24.px)
             .height(24.px)
             .toAttrs {
-                attr(
-                    "viewBox",
-                    "0 0 24 24"
-                )
-                attr(
-                    "fill",
-                    "none"
-                )
+                attr("viewBox", "0 0 24 24")
+                attr("fill", "none")
             }
     ) {
         Path {
             if (selected) {
-                attr(
-                    "style",
-                    "stroke: ${Theme.Primary.hex}"
-                )
+                attr("style", "stroke: ${Theme.Primary.hex}")
             }
-            attr(
-                "id",
-                Id.vectorIcon
-            )
-            attr(
-                "d",
-                pathData
-            )
-            attr(
-                "stroke-width",
-                "2"
-            )
-            attr(
-                "stroke-linecap",
-                "round"
-            )
-            attr(
-                "stroke-linejoin",
-                "round"
-            )
+            attr("id", value = Id.vectorIcon)
+            attr("d", value = pathData)
+            attr("stroke-width", value = "2")
+            attr("stroke-linecap", value = "round")
+            attr("stroke-linejoin", value = "round")
         }
     }
 }
@@ -294,12 +264,7 @@ fun OverflowSidePanel(
             .position(Position.Fixed)
             .zIndex(9)
             .opacity(opacity)
-            .transition(
-                CSSTransition(
-                    property = "opacity",
-                    duration = 300.ms
-                )
-            )
+            .transition(CSSTransition(property = "opacity", duration = 300.ms))
             .backgroundColor(Theme.HalfBlack.rgb)
     ) {
         Column(
@@ -308,21 +273,13 @@ fun OverflowSidePanel(
                 .fillMaxHeight()
                 .width(if (breakpoint < Breakpoint.MD) 50.percent else 25.percent)
                 .translateX(translateX)
-                .transition(
-                    CSSTransition(
-                        property = "translate",
-                        duration = 300.ms
-                    )
-                )
+                .transition(CSSTransition(property = "translate", duration = 300.ms))
                 .overflow(Overflow.Auto)
                 .scrollBehavior(ScrollBehavior.Smooth)
                 .backgroundColor(Theme.Secondary.rgb)
         ) {
             Row(
-                modifier = Modifier.margin(
-                    bottom = 60.px,
-                    top = 24.px
-                ),
+                modifier = Modifier.margin(bottom = 60.px, top = 24.px),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FaXmark(
@@ -348,7 +305,7 @@ fun OverflowSidePanel(
                     src = Res.Image.logo,
                 )
             }
-            NavigationItems()
+            content()
         }
     }
 }

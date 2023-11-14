@@ -2,7 +2,12 @@ package com.kake.base.api
 
 import com.kake.base.data.MongoDB
 import com.kake.base.models.ApiListResponse
+import com.kake.base.models.ApiResponse
+import com.kake.base.models.Category
 import com.kake.base.models.Constants.AUTHOR_PARAM
+import com.kake.base.models.Constants.CATEGORY_PARAM
+import com.kake.base.models.Constants.POST_ID_PARAM
+import com.kake.base.models.Constants.QUERY_PARAM
 import com.kake.base.models.Constants.SKIP_PARAM
 import com.kake.base.models.Post
 import com.varabyte.kobweb.api.Api
@@ -16,19 +21,17 @@ import kotlinx.serialization.encodeToString
 import org.bson.codecs.ObjectIdGenerator
 
 @Api(routeOverride = "addpost")
-suspend fun addPost(context:ApiContext) {
+suspend fun addPost(context: ApiContext) {
     try {
-        val post = context.req.body?.decodeToString()?.let { Json.decodeFromString<Post>(it) }
+        val post = context.req.getBody<Post>()
         val newPost = post?.copy(_id = ObjectIdGenerator().generate().toString())
-        context.res.setBodyText(
+        context.res.setBody(
             newPost?.let {
-                context.data.getValue<MongoDB>().addPost(it).toString()
-            } ?: false.toString()
+                context.data.getValue<MongoDB>().addPost(it)
+            }
         )
-    } catch (e:Exception) {
-        context.res.setBodyText(
-            e.message.toString()
-        )
+    } catch (e: Exception) {
+        context.res.setBody(e.message)
     }
 }
 
@@ -65,15 +68,9 @@ suspend fun readMyPosts(context: ApiContext) {
 suspend fun readMainPosts(context: ApiContext) {
     try {
         val mainPosts = context.data.getValue<MongoDB>().readMainPosts()
-        context.res.setBodyText(
-            Json.encodeToString(ApiListResponse.Success(data = mainPosts))
-        )
+        context.res.setBody(ApiListResponse.Success(data = mainPosts))
     } catch (e: Exception) {
-        context.res.setBody(
-            Json.encodeToString(
-                ApiListResponse.Error(message = e.message.toString())
-            )
-        )
+        context.res.setBody(ApiListResponse.Error(message = e.message.toString()))
     }
 }
 
@@ -121,6 +118,51 @@ suspend fun deleteSelectedPosts(context: ApiContext) {
     }
 }
 
+@Api(routeOverride = "searchposts")
+suspend fun searchPostsByTitle(context: ApiContext) {
+    try {
+        val query = context.req.params[QUERY_PARAM] ?: ""
+        val skip = context.req.params[SKIP_PARAM]?.toInt() ?: 0
+        val posts = context.data.getValue<MongoDB>().searchPostsByTittle(
+            query = query,
+            skip = skip
+        )
+        context.res.setBody(ApiListResponse.Success(data = posts))
+    } catch (e: Exception) {
+        context.res.setBody(ApiListResponse.Error(message = e.message.toString()))
+    }
+}
+
+@Api(routeOverride = "searchpostsbycategory")
+suspend fun searchPostsByCategory(context: ApiContext) {
+    try {
+        val category =
+            Category.valueOf(context.req.params[CATEGORY_PARAM] ?: Category.Programming.name)
+        val skip = context.req.params[SKIP_PARAM]?.toInt() ?: 0
+        val posts = context.data.getValue<MongoDB>().searchPostsByCategory(
+            category = category,
+            skip = skip
+        )
+        context.res.setBody(ApiListResponse.Success(data = posts))
+    } catch (e: Exception) {
+        context.res.setBody(ApiListResponse.Error(message = e.message.toString()))
+    }
+}
+
+@Api(routeOverride = "readselectedpost")
+suspend fun readSelectedPost(context: ApiContext) {
+    val postId = context.req.params[POST_ID_PARAM]
+    if (!postId.isNullOrEmpty()) {
+        try {
+            val selectedPost = context.data.getValue<MongoDB>().readSelectedPost(id = postId)
+            context.res.setBody(ApiResponse.Success(data = selectedPost))
+        } catch (e: Exception) {
+            context.res.setBody(ApiResponse.Error(message = e.message.toString()))
+        }
+    } else {
+        context.res.setBody(ApiResponse.Error(message = "Selected Post does not exist."))
+    }
+}
 
 inline fun <reified T> Response.setBody(data: T) {
     setBodyText(Json.encodeToString(data))

@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import com.kake.base.components.AdminPageLayout
 import com.kake.base.components.ControlPopup
 import com.kake.base.components.MessagePopup
+import com.kake.base.models.ApiResponse
 import com.kake.base.models.Category
 import com.kake.base.models.Constants.POST_ID_PARAM
 import com.kake.base.models.ControlStyle
@@ -24,6 +25,7 @@ import com.kake.base.util.Id
 import com.kake.base.util.addPost
 import com.kake.base.util.applyControlStyle
 import com.kake.base.util.applyStyle
+import com.kake.base.util.fetchSelectedPost
 import com.kake.base.util.getEditor
 import com.kake.base.util.getSelectedText
 import com.kake.base.util.isUserLoggedIn
@@ -156,24 +158,26 @@ fun CreateScreen() {
 
     LaunchedEffect(hasPostIdParam) {
         if (hasPostIdParam) {
-            /* val postId = context.route.params[POST_ID_PARAM] ?: ""
-             val response = fetchSelectedPost(id = postId)
-             if (response is ApiListResponse.Success) {
-                 (document.getElementById(Id.editor) as HTMLTextAreaElement).value =
-                     response.data.content
-                 uiState = uiState.copy(
-                     id = response.data._id,
-                     title = response.data.title,
-                     subtitle = response.data.subtitle,
-                     content = response.data.content,
-                     category = response.data.category,
-                     thumbnail = response.data.thumbnail,
-                     buttonText = "Update",
-                     main = response.data.main,
-                     popular = response.data.popular,
-                     sponsored = response.data.sponsored
-                 )
-             }*/
+            println("체크체크1")
+            val postId = context.route.params[POST_ID_PARAM] ?: ""
+            val response = fetchSelectedPost(id = postId)
+            if (response is ApiResponse.Success) {
+                println("체크체크2")
+                (document.getElementById(Id.editor) as HTMLTextAreaElement).value =
+                    response.data.content
+                uiState = uiState.copy(
+                    id = response.data._id,
+                    title = response.data.title,
+                    subtitle = response.data.subtitle,
+                    content = response.data.content,
+                    category = response.data.category,
+                    thumbnail = response.data.thumbnail,
+                    buttonText = "Update",
+                    main = response.data.main,
+                    popular = response.data.popular,
+                    sponsored = response.data.sponsored
+                )
+            }
         } else {
             (document.getElementById(Id.editor) as HTMLTextAreaElement).value = ""
             uiState = uiState.reset()
@@ -428,42 +432,42 @@ fun CreateScreen() {
                 )
             }
         }
-        if (uiState.messagePopup) {
-            MessagePopup(
-                message = "Please fill out all fields.",
-                onDialogDismiss = { uiState = uiState.copy(messagePopup = false) }
-            )
-        }
-        if (uiState.linkPopup) {
-            ControlPopup(
-                editorControl = EditorControl.Link,
-                onDialogDismiss = { uiState = uiState.copy(linkPopup = false) },
-                onAddClick = { href, title ->
-                    applyStyle(
-                        ControlStyle.Link(
-                            selectedText = getSelectedText(),
-                            href = href,
-                            title = title
-                        )
+    }
+    if (uiState.messagePopup) {
+        MessagePopup(
+            message = "Please fill out all fields.",
+            onDialogDismiss = { uiState = uiState.copy(messagePopup = false) }
+        )
+    }
+    if (uiState.linkPopup) {
+        ControlPopup(
+            editorControl = EditorControl.Link,
+            onDialogDismiss = { uiState = uiState.copy(linkPopup = false) },
+            onAddClick = { href, title ->
+                applyStyle(
+                    ControlStyle.Link(
+                        selectedText = getSelectedText(),
+                        href = href,
+                        title = title
                     )
-                }
-            )
-        }
-        if (uiState.imagePopup) {
-            ControlPopup(
-                editorControl = EditorControl.Image,
-                onDialogDismiss = { uiState = uiState.copy(imagePopup = false) },
-                onAddClick = { imageUrl, description ->
-                    applyStyle(
-                        ControlStyle.Image(
-                            selectedText = getSelectedText(),
-                            imageUrl = imageUrl,
-                            desc = description
-                        )
+                )
+            }
+        )
+    }
+    if (uiState.imagePopup) {
+        ControlPopup(
+            editorControl = EditorControl.Image,
+            onDialogDismiss = { uiState = uiState.copy(imagePopup = false) },
+            onAddClick = { imageUrl, description ->
+                applyStyle(
+                    ControlStyle.Image(
+                        selectedText = getSelectedText(),
+                        imageUrl = imageUrl,
+                        desc = description
                     )
-                }
-            )
-        }
+                )
+            }
+        )
     }
 }
 
@@ -715,8 +719,7 @@ fun Editor(editorVisibility: Boolean) {
                     else Visibility.Hidden
                 )
                 .onKeyDown {
-                    println("onKeyDown ${it.code}")
-                    if (it.code == "Enter" /*|| it.shiftKey*/) {
+                    if (it.code == "Enter" && it.shiftKey) {
                         applyStyle(
                             controlStyle = ControlStyle.Break(
                                 selectedText = getSelectedText()

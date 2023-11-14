@@ -1,5 +1,6 @@
 package com.kake.base.data
 
+import com.kake.base.models.Category
 import com.kake.base.models.Constants.POSTS_PER_PAGE
 import com.kake.base.models.Post
 import com.kake.base.models.PostWithoutDetails
@@ -138,5 +139,34 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
         return postCollection
             .deleteMany(Filters.`in`(Post::_id.name, ids))
             .wasAcknowledged()
+    }
+
+
+    override suspend fun searchPostsByTittle(query: String, skip: Int): List<PostWithoutDetails> {
+        val regexQuery = query.toRegex(RegexOption.IGNORE_CASE)
+        return postCollection
+            .withDocumentClass(PostWithoutDetails::class.java)
+            .find(Filters.regex(PostWithoutDetails::title.name, regexQuery.pattern))
+            .sort(descending(PostWithoutDetails::date.name))
+            .skip(skip)
+            .limit(POSTS_PER_PAGE)
+            .toList()
+    }
+
+    override suspend fun searchPostsByCategory(
+        category: Category,
+        skip: Int
+    ): List<PostWithoutDetails> {
+        return postCollection
+            .withDocumentClass(PostWithoutDetails::class.java)
+            .find(Filters.eq(PostWithoutDetails::category.name, category))
+            .sort(descending(PostWithoutDetails::date.name))
+            .skip(skip)
+            .limit(POSTS_PER_PAGE)
+            .toList()
+    }
+
+    override suspend fun readSelectedPost(id: String): Post {
+        return postCollection.find(Filters.eq(Post::_id.name, id)).toList().first()
     }
 }

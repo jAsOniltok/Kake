@@ -1,7 +1,7 @@
 package com.kake.base.util
 
-import com.kake.base.ApiResponse
 import com.kake.base.models.ApiListResponse
+import com.kake.base.models.ApiResponse
 import com.kake.base.models.Category
 import com.kake.base.models.Constants.AUTHOR_PARAM
 import com.kake.base.models.Constants.CATEGORY_PARAM
@@ -19,7 +19,6 @@ import kotlinx.browser.localStorage
 import kotlinx.browser.window
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.decodeFromString
 import org.w3c.dom.get
 import org.w3c.dom.set
 import kotlin.js.Date
@@ -245,10 +244,10 @@ suspend fun fetchSelectedPost(id: String): ApiResponse {
         val result = window.api.tryGet(
             apiPath = "readselectedpost?${POST_ID_PARAM}=$id"
         )?.decodeToString()
-        result?.parseData() ?: ApiResponse.Error(errorMessage = "Result is null")
+        result?.parseData() ?: ApiResponse.Error(message = "Result is null")
     } catch (e: Exception) {
         println(e)
-        ApiResponse.Error(errorMessage = e.message.toString())
+        ApiResponse.Error(message = e.message.toString())
     }
 }
 

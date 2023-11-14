@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.kake.base.ApiResponse
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,13 +57,4 @@ fun MainScreen() {
 
 fun String.isNumeric(): Boolean {
     return this.matches(Regex("-?\\d+"))
-}
-
-private suspend fun fetchData(count: Int): ApiResponse {
-    return try {
-        val apiService = RetrofitClient.apiService
-        apiService.getPeople(count = count)
-    } catch (e: Exception) {
-        ApiResponse.Error(errorMessage = e.message.toString())
-    }
 }

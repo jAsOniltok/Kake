@@ -1,7 +1,6 @@
 package com.kake.android
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.kake.base.ApiResponse
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -10,8 +9,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("api/getpeople")
-    suspend fun getPeople(@Query("count") count: Int): ApiResponse
 }
 
 object RetrofitClient {
