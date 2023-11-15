@@ -2,6 +2,7 @@ package com.kake.base.data
 
 import com.kake.base.models.Category
 import com.kake.base.models.Constants.POSTS_PER_PAGE
+import com.kake.base.models.Newsletter
 import com.kake.base.models.Post
 import com.kake.base.models.PostWithoutDetails
 import com.kake.base.models.User
@@ -33,6 +34,7 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
     private val database = client.getDatabase(DATABASE_NAME)
     private val userCollection = database.getCollection<User>("user")
     private val postCollection = database.getCollection<Post>("post")
+    private val newsletterCollection = database.getCollection<Newsletter>("newsletter")
 
     override suspend fun checkUserExistence(user: User): User? {
         return try {
@@ -168,5 +170,20 @@ class MongoDB (private val context:InitApiContext): MongoRepository {
 
     override suspend fun readSelectedPost(id: String): Post {
         return postCollection.find(Filters.eq(Post::_id.name, id)).toList().first()
+    }
+
+    override suspend fun subscribe(newsletter: Newsletter): String {
+        val result = newsletterCollection
+            .find(Filters.eq(Newsletter::email.name, newsletter.email))
+            .toList()
+        return if (result.isNotEmpty()) {
+            "You're already subscribed."
+        } else {
+            val newEmail = newsletterCollection
+                .insertOne(newsletter)
+                .wasAcknowledged()
+            if (newEmail) "Successfully Subscribed!"
+            else "Something went wrong. Please try again later."
+        }
     }
 }

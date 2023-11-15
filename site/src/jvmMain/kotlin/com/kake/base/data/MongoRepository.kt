@@ -1,6 +1,7 @@
 package com.kake.base.data
 
 import com.kake.base.models.Category
+import com.kake.base.models.Newsletter
 import com.kake.base.models.Post
 import com.kake.base.models.PostWithoutDetails
 import com.kake.base.models.User
@@ -19,5 +20,6 @@ interface MongoRepository {
     suspend fun searchPostsByTittle(query: String, skip: Int): List<PostWithoutDetails>
     suspend fun searchPostsByCategory(category: Category, skip: Int): List<PostWithoutDetails>
     suspend fun readSelectedPost(id: String): Post
+    suspend fun subscribe(newsletter: Newsletter): String
 
 }

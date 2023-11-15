@@ -60,6 +60,7 @@ suspend fun readMyPosts(context: ApiContext) {
         )
         context.res.setBody(ApiListResponse.Success(data = myPosts))
     } catch (e: Exception) {
+        context.logger.error("readMyPosts error" + e.message.toString())
         context.res.setBody(ApiListResponse.Error(message = e.message.toString()))
     }
 }
