@@ -55,7 +55,7 @@ kotlin {
             dependencies {
                 implementation(compose.html.core)
                 implementation(libs.kobweb.core)
-                implementation(libs.kobweb.silk)
+                implementation(libs.kobweb.silk.core)
                 implementation(libs.kobweb.silk.icons.fa)
                 implementation(libs.kotlinx.serialization)
                 // This default template uses built-in SVG icons, but what's available is limited.
@@ -68,7 +68,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(libs.kobweb.api)
-                implementation(libs.mongo.kotlin.driver)
+                implementation(libs.mongodb.kotlin.driver)
                 implementation(libs.kotlinx.serialization)
             }
         }

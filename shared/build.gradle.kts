@@ -14,14 +14,10 @@ version = "1.0-SNAPSHOT"
 
 android {
     namespace = "com.kake.base"
-    compileSdk = 33
-    defaultConfig {
-        minSdk = 28
-        targetSdk = 33
-    }
+    compileSdk = 34
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
