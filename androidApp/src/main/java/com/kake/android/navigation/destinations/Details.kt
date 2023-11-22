@@ -20,7 +20,7 @@ fun NavGraphBuilder.detailsRoute(
     ) {
         val postId = it.arguments?.getString(POST_ID_ARGUMENT)
         DetailsScreen(
-            url = "http://10.0.2.2:8080/posts/post?${POST_ID_ARGUMENT}=$postId&${SHOW_SECTIONS_PARAM}=false",
+            url = "http://172.30.1.24:8080/posts/post?${POST_ID_ARGUMENT}=$postId&${SHOW_SECTIONS_PARAM}=false",
             onBackPress = onBackPress
         )
     }
