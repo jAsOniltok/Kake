@@ -1,9 +1,9 @@
-package com.kake.android.models
+package com.kake.base.models
 
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-open class Post: RealmObject {
+actual open class Post: RealmObject {
     @PrimaryKey
     var _id: String = ""
     var author: String = ""

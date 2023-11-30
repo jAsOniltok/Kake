@@ -21,9 +21,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
 import com.kake.android.components.NavigationDrawer
 import com.kake.android.components.PostCardsView
-import com.kake.android.models.Category
-import com.kake.android.models.Post
+import com.kake.base.models.Category
 import com.kake.android.util.RequestState
+import com.kake.base.models.Post
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

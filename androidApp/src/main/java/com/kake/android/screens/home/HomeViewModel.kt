@@ -6,9 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kake.android.data.MongoSync
-import com.kake.android.models.Post
 import com.kake.android.util.Constants.APP_ID
 import com.kake.android.util.RequestState
+import com.kake.base.models.Post
 import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.Credentials
 import kotlinx.coroutines.Dispatchers

@@ -26,11 +26,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.kake.android.models.Category
-import com.kake.android.models.Post
+import com.kake.base.models.Category
 import com.kake.android.util.RequestState
 import com.kake.android.util.convertLongToDate
 import com.kake.android.util.decodeThumbnailImage
+import com.kake.base.models.Post
 
 @Composable
 fun PostCard(

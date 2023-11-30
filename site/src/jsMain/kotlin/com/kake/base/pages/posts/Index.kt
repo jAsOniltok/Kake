@@ -14,7 +14,6 @@ import com.kake.base.components.LoadingIndicator
 import com.kake.base.components.OverflowSidePanel
 import com.kake.base.models.ApiResponse
 import com.kake.base.models.Constants.POST_ID_PARAM
-import com.kake.base.models.Post
 import com.kake.base.models.Theme
 import com.kake.base.sections.FooterSection
 import com.kake.base.sections.HeaderSection

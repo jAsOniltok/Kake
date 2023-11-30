@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.kake.android.models.Category
+import com.kake.base.models.Category
 import com.kake.android.navigation.Screen
 import com.kake.android.screens.category.CategoryScreen
 import com.kake.android.screens.category.CategoryViewModel

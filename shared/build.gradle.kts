@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.kobweb.library)
     alias(libs.plugins.serialization.plugin)
+    alias(libs.plugins.mongodb.realm)
 }
 
 group = "com.kake.base"
@@ -59,7 +60,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-
+                implementation(libs.mongodb.sync)
             }
         }
         val iosX64Main by getting
@@ -72,6 +73,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
+                implementation(libs.mongodb.sync)
             }
         }
     }

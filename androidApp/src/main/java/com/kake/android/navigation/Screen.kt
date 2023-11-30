@@ -2,7 +2,7 @@ package com.kake.android.navigation
 
 import com.kake.android.util.Constants.CATEGORY_ARGUMENT
 import com.kake.android.util.Constants.POST_ID_ARGUMENT
-import com.kake.android.models.Category as PostCategory
+import com.kake.base.models.Category as PostCategory
 
 sealed class Screen(val route: String) {
     data object Home : Screen(route = "home_screen")

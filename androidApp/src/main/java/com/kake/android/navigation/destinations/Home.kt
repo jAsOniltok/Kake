@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.kake.android.models.Category
+import com.kake.base.models.Category
 import com.kake.android.navigation.Screen
 import com.kake.android.screens.home.HomeScreen
 import com.kake.android.screens.home.HomeViewModel

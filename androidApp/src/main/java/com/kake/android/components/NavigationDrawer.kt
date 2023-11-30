@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.alpha
 import com.kake.android.R
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.kake.android.models.Category
+import com.kake.base.models.Category
 
 @Composable
 fun NavigationDrawer(

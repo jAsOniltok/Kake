@@ -11,9 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import com.kake.android.components.PostCardsView
-import com.kake.android.models.Category
-import com.kake.android.models.Post
+import com.kake.base.models.Category
 import com.kake.android.util.RequestState
+import com.kake.base.models.Post
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)

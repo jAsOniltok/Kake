@@ -1,9 +1,9 @@
 package com.kake.android.data
 
-import com.kake.android.models.Category
-import com.kake.android.models.Post
+import com.kake.base.models.Category
 import com.kake.android.util.Constants.APP_ID
 import com.kake.android.util.RequestState
+import com.kake.base.models.Post
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.log.LogLevel

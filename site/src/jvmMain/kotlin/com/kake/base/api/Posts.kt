@@ -9,7 +9,6 @@ import com.kake.base.models.Constants.CATEGORY_PARAM
 import com.kake.base.models.Constants.POST_ID_PARAM
 import com.kake.base.models.Constants.QUERY_PARAM
 import com.kake.base.models.Constants.SKIP_PARAM
-import com.kake.base.models.Post
 import com.varabyte.kobweb.api.Api
 import com.varabyte.kobweb.api.ApiContext
 import com.varabyte.kobweb.api.data.getValue

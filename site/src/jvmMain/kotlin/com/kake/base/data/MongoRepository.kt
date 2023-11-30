@@ -2,7 +2,6 @@ package com.kake.base.data
 
 import com.kake.base.models.Category
 import com.kake.base.models.Newsletter
-import com.kake.base.models.Post
 import com.kake.base.models.PostWithoutDetails
 import com.kake.base.models.User
 

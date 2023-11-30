@@ -1,4 +1,4 @@
-package com.kake.android.models
+package com.kake.base.models
 
 import com.kake.base.CategoryCommon
 
