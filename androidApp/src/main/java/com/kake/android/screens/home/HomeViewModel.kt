@@ -5,9 +5,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kake.android.data.MongoSync
-import com.kake.android.util.Constants.APP_ID
-import com.kake.android.util.RequestState
+import com.kake.base.data.MongoSyncRepositoryImpl
+import com.kake.base.util.Constants.APP_ID
+import com.kake.base.util.RequestState
 import com.kake.base.models.Post
 import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.Credentials
@@ -23,6 +23,7 @@ class HomeViewModel : ViewModel() {
     private val _searchedPosts: MutableState<RequestState<List<Post>>> =
         mutableStateOf(RequestState.Idle)
     val searchedPosts: State<RequestState<List<Post>>> = _searchedPosts
+    private val mongoSyncRepository = MongoSyncRepositoryImpl()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -35,7 +36,7 @@ class HomeViewModel : ViewModel() {
         withContext(Dispatchers.Main) {
             _allPosts.value = RequestState.Loading
         }
-        MongoSync.readAllPosts().collectLatest {
+        mongoSyncRepository.readAllPosts().collectLatest {
             _allPosts.value = it
         }
     }
@@ -45,7 +46,7 @@ class HomeViewModel : ViewModel() {
             withContext(Dispatchers.Main) {
                 _searchedPosts.value = RequestState.Loading
             }
-            MongoSync.searchPostsByTitle(query = query).collectLatest {
+            mongoSyncRepository.searchPostsByTitle(query = query).collectLatest {
                 _searchedPosts.value = it
             }
         }

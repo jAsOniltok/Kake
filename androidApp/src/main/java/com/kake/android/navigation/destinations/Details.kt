@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kake.android.navigation.Screen
 import com.kake.android.screens.details.DetailsScreen
-import com.kake.android.util.Constants.POST_ID_ARGUMENT
+import com.kake.base.util.Constants.POST_ID_ARGUMENT
 import com.kake.base.Constants.SHOW_SECTIONS_PARAM
 
 fun NavGraphBuilder.detailsRoute(

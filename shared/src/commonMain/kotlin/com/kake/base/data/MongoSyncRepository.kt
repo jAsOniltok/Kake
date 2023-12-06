@@ -1,8 +1,8 @@
-package com.kake.android.data
+package com.kake.base.data
 
 import com.kake.base.models.Category
-import com.kake.android.util.RequestState
 import com.kake.base.models.Post
+import com.kake.base.util.RequestState
 import kotlinx.coroutines.flow.Flow
 
 interface MongoSyncRepository {

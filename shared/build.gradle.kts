@@ -17,8 +17,8 @@ android {
     namespace = "com.kake.base"
     compileSdk = 34
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
@@ -41,6 +41,7 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 implementation(libs.kotlinx.serialization)
+                implementation(libs.kotlinx.coroutines)
             }
         }
 

@@ -1,4 +1,4 @@
-package com.kake.android.util
+package com.kake.base.util
 
 sealed class RequestState<out T> {
     data object Idle : RequestState<Nothing>()

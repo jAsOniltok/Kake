@@ -11,7 +11,7 @@ activity-compose = "1.8.0"
 compose-bom = "2023.10.00"
 navigation = "2.7.4"
 coroutines = "1.7.1"
-mongodb = "1.9.0"
+mongodb = "1.13.0"
 mongodb-kotlin = "4.10.1"
 coil = "2.3.0"
 

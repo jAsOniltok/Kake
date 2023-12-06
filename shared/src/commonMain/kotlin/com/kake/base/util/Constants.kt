@@ -1,4 +1,4 @@
-package com.kake.android.util
+package com.kake.base.util
 
 object Constants {
     const val APP_ID = "myblogapp-xgvsf"
