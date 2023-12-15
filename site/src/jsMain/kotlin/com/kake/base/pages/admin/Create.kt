@@ -15,6 +15,7 @@ import com.kake.base.models.Category
 import com.kake.base.models.Constants.POST_ID_PARAM
 import com.kake.base.models.ControlStyle
 import com.kake.base.models.EditorControl
+import com.kake.base.models.Post
 import com.kake.base.models.Theme
 import com.kake.base.navigation.Screen
 import com.kake.base.styles.EditorKeyStyle

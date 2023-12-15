@@ -9,6 +9,7 @@ import com.kake.base.models.Constants.POST_ID_PARAM
 import com.kake.base.models.Constants.QUERY_PARAM
 import com.kake.base.models.Constants.SKIP_PARAM
 import com.kake.base.models.Newsletter
+import com.kake.base.models.Post
 import com.kake.base.models.RandomJoke
 import com.kake.base.models.User
 import com.kake.base.models.UserWithoutPassword
