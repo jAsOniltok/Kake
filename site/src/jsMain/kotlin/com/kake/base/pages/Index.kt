@@ -60,7 +60,7 @@ fun HomePage() {
                 }
             },
             onError = {
-                println("fetchLatestPosts error")
+                println("fetchLatestPosts error ${it.message}")
             }
         )
         fetchSponsoredPosts(
@@ -70,7 +70,7 @@ fun HomePage() {
                 }
             },
             onError = {
-                println("fetchSponsoredPosts error")
+                println("fetchSponsoredPosts error ${it.message}")
             }
         )
         fetchPopularPosts(
@@ -83,7 +83,7 @@ fun HomePage() {
                 }
             },
             onError = {
-                println("popularPostsToSkip error")
+                println("popularPostsToSkip error ${it.message}")
             }
         )
     }
@@ -130,7 +130,9 @@ fun HomePage() {
                                 }
                             }
                         },
-                        onError = {}
+                        onError = {
+                            println("Latest posts error ${it.message}")
+                        }
                     )
                 }
             },
@@ -163,7 +165,9 @@ fun HomePage() {
                                 }
                             }
                         },
-                        onError = {}
+                        onError = {
+                            println("Popular posts error ${it.message}")
+                        }
                     )
                 }
             },
