@@ -24,7 +24,7 @@ import org.jetbrains.compose.web.css.px
 
 @Composable
 fun CategoryNavigationItems(
-    selectedCategory: Category? = null,
+    selectedCategory: com.kake.base.models.Category? = null,
     vertical: Boolean = false
 ) {
     val context = rememberPageContext()

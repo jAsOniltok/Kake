@@ -109,7 +109,7 @@ data class CreatePageUiState(
     var thumbnail: String = "",
     var thumbnailInputDisabled: Boolean = true,
     var content: String = "",
-    var category: Category = Category.Programming,
+    var category: com.kake.base.models.Category = com.kake.base.models.Category.Programming,
     var buttonText: String = "Create",
     var popular: Boolean = false,
     var main: Boolean = false,
@@ -125,7 +125,7 @@ data class CreatePageUiState(
         subtitle = "",
         thumbnail = "",
         content = "",
-        category = Category.Programming,
+        category = com.kake.base.models.Category.Programming,
         buttonText = "Create",
         main = false,
         popular = false,
@@ -473,8 +473,8 @@ fun CreateScreen() {
 
 @Composable
 fun CategoryDropdown(
-    selectedCategory: Category,
-    onCategorySelect: (Category) -> Unit
+    selectedCategory: com.kake.base.models.Category,
+    onCategorySelect: (com.kake.base.models.Category) -> Unit
 ) {
     Box(
         modifier = Modifier
