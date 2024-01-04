@@ -16,13 +16,13 @@ import kotlinx.coroutines.launch
 class CategoryViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _categoryPosts: MutableState<RequestState<List<Post>>> =
-        mutableStateOf(RequestState.Idle)
-    val categoryPosts: State<RequestState<List<Post>>> = _categoryPosts
+    private val _categoryPosts: MutableState<List<Post>> =
+        mutableStateOf(emptyList())
+    val categoryPosts: State<List<Post>> = _categoryPosts
     private val mongoSyncRepository = MongoSyncRepositoryImpl()
 
     init {
-        _categoryPosts.value = RequestState.Loading
+//        _categoryPosts.value = RequestState.Loading
         val selectedCategory = savedStateHandle.get<String>("category")
         if (selectedCategory != null) {
             viewModelScope.launch {

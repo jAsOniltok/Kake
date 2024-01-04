@@ -19,7 +19,7 @@ import com.kake.base.models.Post
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryScreen(
-    posts: RequestState<List<Post>>,
+    posts: List<Post>,
     category: Category,
     onBackPress: () -> Unit,
     onPostClick: (String) -> Unit

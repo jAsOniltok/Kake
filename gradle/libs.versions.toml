@@ -3,6 +3,7 @@ jetbrains-compose = "1.5.11"
 kobweb = "0.15.2"
 kotlin = "1.9.21"
 #kmongo = "4.9.0"
+mvvm-flow-swiftui = "0.16.1"
 serialization = "1.6.2"
 agp = "8.1.2"
 core-ktx = "1.12.0"
@@ -14,6 +15,8 @@ coroutines = "1.7.3"
 mongodb = "1.13.0"
 mongodb-kotlin = "4.10.1"
 coil = "2.5.0"
+moko-mvvm-ver = "0.16.1"
+kswift = "0.6.1"
 
 [libraries]
 kobweb-api = { module = "com.varabyte.kobweb:kobweb-api", version.ref = "kobweb" }
@@ -28,6 +31,7 @@ core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+mvvm-flow-swiftui = { module = "dev.icerock.moko:mvvm-flow-swiftui", version.ref = "mvvm-flow-swiftui" }
 ui = { module = "androidx.compose.ui:ui" }
 ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
@@ -38,6 +42,9 @@ kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core",
 mongodb-sync = { module = "io.realm.kotlin:library-sync", version.ref = "mongodb" }
 mongodb-kotlin-driver = { module = "org.mongodb:mongodb-driver-kotlin-coroutine", version.ref = "mongodb-kotlin" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+moko-mvvm-core = { module = "dev.icerock.moko:mvvm-core", version.ref = "moko-mvvm-ver" }
+moko-mvvm-flow = { module = "dev.icerock.moko:mvvm-flow", version.ref = "moko-mvvm-ver" }
+moko-kswift-lib = { module = "dev.icerock.moko:kswift-runtime", version.ref = "kswift" }
 
 [plugins]
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
@@ -49,3 +56,4 @@ serialization-plugin = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 mongodb-realm = { id = "io.realm.kotlin", version.ref = "mongodb" }
+moko-kswift-plugin = { id = "dev.icerock.moko.kswift", version.ref = "kswift" }

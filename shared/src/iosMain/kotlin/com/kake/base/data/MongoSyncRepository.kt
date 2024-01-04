@@ -4,6 +4,7 @@ import com.kake.base.models.Category
 import com.kake.base.models.Post
 import com.kake.base.util.Constants
 import com.kake.base.util.RequestState
+import com.kake.base.util.toCommonFlow
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.log.LogLevel
@@ -37,51 +38,51 @@ actual class MongoSyncRepositoryImpl : MongoSyncRepository {
          }
      }
 
-     override fun readAllPosts(): Flow<RequestState<List<Post>>> {
+     override fun readAllPosts(): Flow<List<Post>> {
          return if (user != null) {
              try {
                  realm.query(Post::class)
                      .asFlow()
                      .map { result ->
-                         RequestState.Success(data = result.list)
+                         result.list
                      }
              } catch (e: Exception) {
-                 flow { emit(RequestState.Error(Exception(e.message))) }
+                 flow { emit(emptyList()) }
              }
          } else {
-             flow { emit(RequestState.Error(Exception("User not authenticated."))) }
+             flow { emit(emptyList()) }
          }
      }
 
-     override fun searchPostsByTitle(query: String): Flow<RequestState<List<Post>>> {
+     override fun searchPostsByTitle(query: String): Flow<List<Post>> {
          return if (user != null) {
              try {
                  realm.query<Post>(query = "title CONTAINS[c] $0", query)
                      .asFlow()
                      .map { result ->
-                         RequestState.Success(data = result.list)
+                         result.list
                      }
              } catch (e: Exception) {
-                 flow { emit(RequestState.Error(Exception(e.message))) }
+                 flow { emit(emptyList()) }
              }
          } else {
-             flow { emit(RequestState.Error(Exception("User not authenticated."))) }
+             flow { emit(emptyList()) }
          }
      }
 
-     override fun searchPostsByCategory(category: Category): Flow<RequestState<List<Post>>> {
+     override fun searchPostsByCategory(category: Category): Flow<List<Post>> {
          return if (user != null) {
              try {
                  realm.query<Post>(query = "category == $0", category.name)
                      .asFlow()
                      .map { result ->
-                         RequestState.Success(data = result.list)
+                         result.list
                      }
              } catch (e: Exception) {
-                 flow { emit(RequestState.Error(Exception(e.message))) }
+                 flow { emit(emptyList()) }
              }
          } else {
-             flow { emit(RequestState.Error(Exception("User not authenticated."))) }
+             flow { emit(emptyList()) }
          }
      }
 }

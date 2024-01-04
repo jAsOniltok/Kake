@@ -27,10 +27,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.kake.base.models.Category
-import com.kake.base.util.RequestState
+import com.kake.base.models.Post
 import com.kake.base.util.convertLongToDate
 import com.kake.base.util.decodeThumbnailImage
-import com.kake.base.models.Post
 
 @Composable
 fun PostCard(
@@ -100,43 +99,27 @@ fun PostCard(
 
 @Composable
 fun PostCardsView(
-    posts: RequestState<List<Post>>,
+    posts: List<Post>,
     topMargin: Dp,
     hideMessage: Boolean = false,
     onPostClick: (String) -> Unit
 ) {
-    when (posts) {
-        is RequestState.Success -> {
-            if(posts.data.isNotEmpty()) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = topMargin)
-                        .padding(horizontal = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(
-                        items = posts.data,
-                        key = { post -> post._id }
-                    ) { post ->
-                        PostCard(post = post, onPostClick = onPostClick)
-                    }
-                }
-            } else {
-                EmptyUI()
+    if (posts.isNotEmpty()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = topMargin)
+                .padding(horizontal = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(
+                items = posts,
+                key = { post -> post._id }
+            ) { post ->
+                PostCard(post = post, onPostClick = onPostClick)
             }
         }
-
-        is RequestState.Error -> {
-            EmptyUI(message = posts.error.message.toString())
-        }
-
-        is RequestState.Idle -> {
-            EmptyUI(hideMessage = hideMessage)
-        }
-
-        is RequestState.Loading -> {
-            EmptyUI(loading = true)
-        }
+    } else {
+        EmptyUI()
     }
 }

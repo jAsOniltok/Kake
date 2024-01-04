@@ -30,8 +30,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    posts: RequestState<List<Post>>,
-    searchedPosts: RequestState<List<Post>>,
+    posts: List<Post>,
+    searchedPosts: List<Post>,
     query: String,
     searchBarOpened: Boolean,
     active: Boolean,

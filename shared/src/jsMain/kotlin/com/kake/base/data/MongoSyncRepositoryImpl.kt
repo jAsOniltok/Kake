@@ -10,15 +10,15 @@ actual class MongoSyncRepositoryImpl actual constructor() : MongoSyncRepository 
         TODO("Not yet implemented")
     }
 
-    override fun readAllPosts(): Flow<RequestState<List<Post>>> {
+    override fun readAllPosts(): Flow<List<Post>> {
         TODO("Not yet implemented")
     }
 
-    override fun searchPostsByTitle(query: String): Flow<RequestState<List<Post>>> {
+    override fun searchPostsByTitle(query: String): Flow<List<Post>> {
         TODO("Not yet implemented")
     }
 
-    override fun searchPostsByCategory(category: Category): Flow<RequestState<List<Post>>> {
+    override fun searchPostsByCategory(category: Category): Flow<List<Post>> {
         TODO("Not yet implemented")
     }
 }

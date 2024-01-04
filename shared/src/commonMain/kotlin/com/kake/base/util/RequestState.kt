@@ -1,8 +1,18 @@
 package com.kake.base.util
 
-sealed class RequestState<out T> {
-    data object Idle : RequestState<Nothing>()
-    data object Loading : RequestState<Nothing>()
-    data class Success<T>(val data: T) : RequestState<T>()
-    data class Error(val error: Throwable) : RequestState<Nothing>()
+import com.kake.base.models.Post
+import kotlinx.serialization.Serializable
+
+sealed class RequestState {
+    data object Idle : RequestState()
+    data object Loading : RequestState()
+    data class Success(val data: List<Post>) : RequestState()
+    data class Error(val error: Exception) : RequestState()
+
+    fun getPosts(): List<Post> {
+        return when (this) {
+            is Success -> data
+            else -> emptyList()
+        }
+    }
 }

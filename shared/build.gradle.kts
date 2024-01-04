@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kobweb.library)
     alias(libs.plugins.serialization.plugin)
     alias(libs.plugins.mongodb.realm)
+    alias(libs.plugins.moko.kswift.plugin)
 }
 
 group = "com.kake.base"
@@ -23,8 +24,11 @@ android {
 
 }
 
-kotlin {
+kswift {
+    install(dev.icerock.moko.kswift.plugin.feature.PlatformExtensionFunctionsFeature)
+}
 
+kotlin {
     configAsKobwebLibrary(includeServer = true)
     android()
     listOf(
@@ -43,12 +47,14 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(libs.kotlinx.serialization)
                 implementation(libs.kotlinx.coroutines)
+                api(libs.moko.mvvm.core)
+                api(libs.moko.mvvm.flow)
             }
         }
 
         val jsMain by getting {
             dependencies {
-             /*   implementation(compose.html.core)
+                /*   implementation(compose.html.core)
                 implementation(libs.kobweb.core)
                 implementation(libs.kobweb.silk.core)
                 implementation(libs.kobweb.silk.icons.fa)*/
@@ -56,7 +62,7 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-           /*     implementation(libs.kobweb.api)
+                /*     implementation(libs.kobweb.api)
                 implementation(libs.kotlinx.serialization)*/
             }
         }
@@ -76,6 +82,12 @@ kotlin {
 
             dependencies {
                 implementation(libs.mongodb.sync)
+                implementation(libs.kotlinx.coroutines)
+                implementation(libs.moko.kswift.lib)
+                implementation(libs.mvvm.flow.swiftui)
+                api(libs.moko.mvvm.core)
+                api(libs.moko.mvvm.flow)
+
             }
         }
     }
