@@ -1,33 +1,30 @@
-package com.kake.base.presentation
+package com.kake.base.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.kake.base.data.MongoSyncRepositoryImpl
 import com.kake.base.models.Post
-import com.kake.base.util.CommonStateFlow
-import com.kake.base.util.Constants
-import com.kake.base.util.RequestState
-import com.kake.base.util.toCommonStateFlow
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import io.realm.kotlin.mongodb.App
-import io.realm.kotlin.mongodb.Credentials
+import com.kake.base.util.initMongoApp
+import com.rickclephas.kmm.viewmodel.KMMViewModel
+import com.rickclephas.kmm.viewmodel.coroutineScope
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel : ViewModel() {
-    private val _state: MutableStateFlow<List<Post>> = MutableStateFlow(emptyList())
-    val state = _state.toCommonStateFlow()
+class HomeViewModel : KMMViewModel() {
+    private val _state = MutableStateFlow<List<Post>>(emptyList())
+    override fun onCleared() {
+        super.onCleared()
+    }
+
+    @NativeCoroutinesState
+    val state = _state.asStateFlow()
+
     private val _allPosts: MutableState<List<Post>> =
         mutableStateOf(emptyList())
     val allPosts: State<List<Post>> = _allPosts
@@ -37,24 +34,30 @@ class HomeViewModel : ViewModel() {
     private val mongoSyncRepository = MongoSyncRepositoryImpl()
 
     init {
-        viewModelScope.launch {
-            App.create(Constants.APP_ID).login(Credentials.anonymous())
+        viewModelScope.coroutineScope.launch {
+            initMongoApp()
             fetchAllPosts()
         }
     }
 
-    suspend fun fetchAllPosts() {
-        withContext(Dispatchers.Main) {
-//            _allPosts.value = RequestState.Loading
-        }
-        mongoSyncRepository.readAllPosts().collectLatest {
-            _allPosts.value = it
-            println("fetchAllPostssss ${_allPosts.value.size}")
+    fun fetchAllPosts() {
+        viewModelScope.coroutineScope.launch(Dispatchers.Main) {
+            try {
+                println("fetchAllPosts() try")
+                mongoSyncRepository.readAllPosts().collect { // collectLatest 대신 collect 사용
+                    _allPosts.value = it
+                    _state.value = it
+                    println("_state.value: ${_state.value.size}")
+                }
+            } catch (e: Exception) {
+                println("fetchAllPosts() error: $e")
+            }
         }
     }
 
+
     fun searchPostsByTitle(query: String) {
-        viewModelScope.launch {
+        viewModelScope.coroutineScope.launch {
             withContext(Dispatchers.Main) {
 //                _searchedPosts.value = RequestState.Loading
             }
@@ -63,6 +66,8 @@ class HomeViewModel : ViewModel() {
             }
         }
     }
+
+    fun getStateValue() = state.value
 
     fun resetSearchedPosts() {
 //        _searchedPosts.value = RequestState.Idle

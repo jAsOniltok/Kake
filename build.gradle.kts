@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.mongodb.realm) apply false
+    alias(libs.plugins.google.devtools) apply false
+//    alias(libs.plugins.kmp.coroutine) apply false
 }
 
 subprojects {

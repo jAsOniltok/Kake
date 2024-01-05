@@ -1,5 +1,6 @@
 [versions]
 jetbrains-compose = "1.5.11"
+kmm-viewmodel-core = "1.0.0-ALPHA-17"
 kobweb = "0.15.2"
 kotlin = "1.9.21"
 #kmongo = "4.9.0"
@@ -17,8 +18,11 @@ mongodb-kotlin = "4.10.1"
 coil = "2.5.0"
 moko-mvvm-ver = "0.16.1"
 kswift = "0.6.1"
+devtools = "1.9.21-1.0.15"
+kmp-coroutine-ver = "1.0.0-ALPHA-24"
 
 [libraries]
+kmm-viewmodel-core = { module = "com.rickclephas.kmm:kmm-viewmodel-core", version.ref = "kmm-viewmodel-core" }
 kobweb-api = { module = "com.varabyte.kobweb:kobweb-api", version.ref = "kobweb" }
 kobweb-core = { module = "com.varabyte.kobweb:kobweb-core ", version.ref = "kobweb" }
 kobweb-silk-core = { module = "com.varabyte.kobweb:kobweb-silk", version.ref = "kobweb" }
@@ -57,3 +61,5 @@ com-android-application = { id = "com.android.application", version.ref = "agp" 
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 mongodb-realm = { id = "io.realm.kotlin", version.ref = "mongodb" }
 moko-kswift-plugin = { id = "dev.icerock.moko.kswift", version.ref = "kswift" }
+google-devtools = { id = "com.google.devtools.ksp", version.ref = "devtools" }
+kmp-coroutine = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmp-coroutine-ver" }

@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.serialization.plugin)
     alias(libs.plugins.mongodb.realm)
     alias(libs.plugins.moko.kswift.plugin)
+    alias(libs.plugins.google.devtools)
+    alias(libs.plugins.kmp.coroutine)
 }
 
 group = "com.kake.base"
@@ -42,6 +44,10 @@ kotlin {
     }
     @Suppress("UNUSED_VARIABLE") // Suppress spurious warnings about sourceset variables not being used
     sourceSets {
+        all {
+            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+            languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
+        }
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
@@ -49,6 +55,7 @@ kotlin {
                 implementation(libs.kotlinx.coroutines)
                 api(libs.moko.mvvm.core)
                 api(libs.moko.mvvm.flow)
+                api(libs.kmm.viewmodel.core)
             }
         }
 

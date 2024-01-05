@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import com.kake.base.models.Category
 import com.kake.android.navigation.Screen
 import com.kake.android.screens.home.HomeScreen
-import com.kake.base.presentation.HomeViewModel
+import com.kake.base.viewmodel.HomeViewModel
 
 fun NavGraphBuilder.homeRoute(
     onCategorySelect: (Category) -> Unit,
