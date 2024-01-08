@@ -4,26 +4,6 @@ import shared
 
 
 
-struct PostCardView: View {
-    let post: Post
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            AsyncImageView(url: URL(string: post.thumbnail)!)
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 200)
-                .clipped()
-
-            // 나머지 UI 요소들...
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(radius: 4)
-    }
-}
-
-
 struct AsyncImageView: View {
     @StateObject private var loader: ImageLoader
 
