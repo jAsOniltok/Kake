@@ -28,6 +28,5 @@ struct HomeScreen: View {
         .task {
             viewModel.fetchAllPosts()
         }
-    
     }
 }

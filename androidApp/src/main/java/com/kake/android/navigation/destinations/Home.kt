@@ -1,5 +1,7 @@
 package com.kake.android.navigation.destinations
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,14 +19,16 @@ fun NavGraphBuilder.homeRoute(
     onPostClick: (String) -> Unit
 ) {
     composable(route = Screen.Home.route) {
-        val viewModel: HomeViewModel = viewModel()
+        val viewModel: HomeViewModel = remember { HomeViewModel() }
         var query by remember { mutableStateOf("") }
         var searchBarOpened by remember { mutableStateOf(false) }
         var active by remember { mutableStateOf(false) }
+        val posts = viewModel.allPosts.collectAsState()
+        val searchedPosts = viewModel.searchedPosts.collectAsState()
 
         HomeScreen(
-            posts = viewModel.allPosts.value,
-            searchedPosts = viewModel.searchedPosts.value,
+            posts = posts.value,
+            searchedPosts = searchedPosts.value,
             query = query,
             searchBarOpened = searchBarOpened,
             active = active,

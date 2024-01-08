@@ -4,7 +4,6 @@ import com.kake.base.models.Category
 import com.kake.base.models.Post
 import com.kake.base.util.Constants
 import com.kake.base.util.RequestState
-import com.kake.base.util.toCommonFlow
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.log.LogLevel

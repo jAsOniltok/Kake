@@ -1,8 +1,5 @@
 package com.kake.base.viewmodel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.kake.base.data.MongoSyncRepositoryImpl
 import com.kake.base.models.Post
 import com.kake.base.util.initMongoApp
@@ -14,7 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeViewModel : KMMViewModel() {
 
@@ -34,19 +30,19 @@ class HomeViewModel : KMMViewModel() {
         }
     }
 
-    fun fetchAllPosts() {
+    private fun fetchAllPosts() {
         viewModelScope.coroutineScope.launch(Dispatchers.Main) {
             try {
                 println("fetchAllPosts() try")
-                mongoSyncRepository.readAllPosts().collect { // collectLatest 대신 collect 사용
+                mongoSyncRepository.readAllPosts().collectLatest { // collectLatest 대신 collect 사용
                     _allPosts.value = it
+                    println("fetchAllPosts() _allPosts ${_allPosts.value.size}")
                 }
             } catch (e: Exception) {
                 println("fetchAllPosts() error: $e")
             }
         }
     }
-
 
     fun searchPostsByTitle(query: String) {
         viewModelScope.coroutineScope.launch {
