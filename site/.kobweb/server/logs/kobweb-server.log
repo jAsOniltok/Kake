@@ -1,0 +1,32 @@
+2024-01-09 12:28:38.388 [main] DEBUG ktor.application - Java Home: /Users/gim-yonghyeon/Library/Java/JavaVirtualMachines/jbr-17.0.7/Contents
+2024-01-09 12:28:38.394 [main] DEBUG ktor.application - Class Loader: jdk.internal.loader.ClassLoaders$AppClassLoader@7aec35a: [file:/Users/gim-yonghyeon/Documents/Kake/site/.kobweb/server/server.jar!/ch]
+2024-01-09 12:28:38.414 [main] INFO  ktor.application - API jar found and will be loaded: "build/libs/Kake.jar"
+2024-01-09 12:28:38.732 [main] INFO  ktor.application - Loaded and initialized server API jar in 236ms.
+2024-01-09 12:28:38.768 [main] INFO  ktor.application - Initializing Kobweb streams.
+2024-01-09 12:28:38.821 [main] INFO  ktor.application - Application started in 0.561 seconds.
+2024-01-09 12:28:39.013 [main] INFO  ktor.application - Responding at http://0.0.0.0:8080
+2024-01-09 12:28:46.882 [eventLoopGroupProxy-4-3] DEBUG ktor.application - Client connected and is requesting kobweb status events.
+2024-01-09 12:28:55.865 [eventLoopGroupProxy-4-6] DEBUG ktor.application - Client connected and is requesting kobweb status events.
+2024-01-09 12:29:08.476 [eventLoopGroupProxy-4-1] DEBUG ktor.application - Client connected and is requesting kobweb status events.
+2024-01-09 12:29:09.777 [eventLoopGroupProxy-3-4] DEBUG ktor.application - I/O operation failed
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.SocketChannelImpl.throwConnectionReset(SocketChannelImpl.java:394)
+	at java.base/sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:426)
+	at io.netty.buffer.PooledByteBuf.setBytes(PooledByteBuf.java:254)
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1132)
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:357)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:151)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.ktor.server.netty.EventLoopGroupProxy$Companion.create$lambda$1$lambda$0(NettyApplicationEngine.kt:296)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2024-01-09 12:29:10.017 [eventLoopGroupProxy-4-1] DEBUG ktor.application - Stopped sending kobweb status events, probably because client disconnected or server is shutting down. (JobCancellationException: Job was cancelled)
+2024-01-09 12:29:14.106 [eventLoopGroupProxy-4-4] DEBUG ktor.application - Client connected and is requesting kobweb status events.
+2024-01-09 12:29:15.338 [eventLoopGroupProxy-4-4] DEBUG ktor.application - Stopped sending kobweb status events, probably because client disconnected or server is shutting down. (ChannelWriteException: Cannot write to a channel)
+2024-01-09 13:49:36.698 [kotlinx.coroutines.DefaultExecutor] INFO  ktor.application - Kobweb server shutting down...
+2024-01-09 13:49:38.872 [kotlinx.coroutines.DefaultExecutor] INFO  ktor.application - Server finished shutting down.
