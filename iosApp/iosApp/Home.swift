@@ -10,12 +10,21 @@ import SwiftUI
 import shared
 import KMMViewModelCore
 import KMMViewModelSwiftUI
+import WebKit
+
 
 struct HomeScreenView: View {
     @StateViewModel var viewModel =  HomeViewModel()
     @State private var searchQuery: String = ""
-
+    var webview: some View {
+//        WebView(url: URL(string: "https://www.naver.com")!)
+//        WebView(url: URL(string: "http://172.30.1.24:8080/posts/post?postId=658bb0f9e2b2aa68691fa9c4&showSections=false")!)
+        WebView(url: URL(string: "http://172.30.1.24:8080/posts/post?postId=659c9ef41c6e5612ae25e56f&showSections=false")!)
+            .navigationBarTitle("Details", displayMode: .inline)
+            .edgesIgnoringSafeArea(.bottom)
+    }
     var body: some View {
+        webview
         NavigationView {
             List(viewModel.allPosts, id: \._id) { post in
                 PostCardView(post: post)
@@ -67,12 +76,37 @@ struct SearchView: View {
     }
 }
 
+// WebView를 SwiftUI에서 사용할 수 있도록 하는 뷰
+struct WebView: UIViewRepresentable {
+    let url: URL
+    
+    func makeUIView(context: Context) -> WKWebView {
+        return WKWebView()
+    }
+    
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        let request = URLRequest(url: url)
+        uiView.load(request)
+    }
+}
+
+// 웹뷰를 표시하는 상세 화면 뷰
+struct DetailsView: View {
+    let url: URL
+    var body: some View {
+        WebView(url: url)
+            .navigationBarTitle("Details", displayMode: .inline)
+            .edgesIgnoringSafeArea(.bottom)
+    }
+}
+
+// PostCardsView에서 PostCard를 선택했을 때 상세 화면으로 이동
 struct PostCardsView: View {
     var posts: [Post]
 
     var body: some View {
-        ScrollView {
-            ForEach(posts, id: \._id) { post in
+        List(posts, id: \._id) { post in
+            NavigationLink(destination: DetailsView(url: URL(string: "http://172.30.1.24:8080/posts/post?postId=\(post._id)&showSections=false")!)) {
                 PostCardView(post: post)
             }
         }
